@@ -5,7 +5,7 @@
 
   <nav>
     {% if section.settings.menu.links == blank %}
-      {% assign main_menu_linklist = linklists[section.settings.menu].links %}
+      {% assign main_menu_linklist = linklists[section.settings['menu-title']].links %}
     {% else %}
       {% assign main_menu_linklist = section.settings.menu.links %}
     {% endif %}
@@ -49,11 +49,11 @@
   "name": "Header",
   "settings": [
     {
-      "type": "header",
+      "type": "text",
       "id": "menu-title",
       "label": "Title",
-      "default": "Menu",
-      "info": "This is a title of the Menu"
+      "info": "This is a title of the Menu",
+      "default": "Menu"
     }
   ]
 }
