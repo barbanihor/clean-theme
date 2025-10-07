@@ -1,44 +1,38 @@
-<header>
-  <div>
-    <h1>{{ shop.name }}</h1>
+{{ 'header.css' | asset_url | stylesheet_tag }}
+
+<header class="header">
+  <div class="header__logo">
+    {{ 'logo.svg' | inline_asset_content }}
   </div>
 
-  <nav>
-    {% if section.settings.menu.links == blank %}
-      {% assign main_menu_linklist = linklists[section.settings['menu-title']].links %}
-    {% else %}
-      {% assign main_menu_linklist = section.settings.menu.links %}
-    {% endif %}
-    {% for link in main_menu_linklist %}
-      {% if link.links != blank %}
-        <div>
-          <span>{{ link.title }}</span>
-          <div>
-            {% for childlink in link.links %}
-              <a href="{{ childlink.url }}">
-                <p>{{ childlink.title }}</p>
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-      {% else %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {% endif %}
-    {% endfor %}
+  <nav class="header__navbar navbar">
+    <ul class="navbar__list">
+      {%- if section.settings.menu.links == blank -%}
+        {%- assign main_menu_linklist = linklists['stellar-menu'] -%}
+      {%- else -%}
+        {% assign main_menu_linklist = section.settings.menu.links %}
+      {%- endif -%}
+
+      {% for link in main_menu_linklist %}
+        <li class="navbar__list-item">
+          <a class="navbar__list-link" href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
   </nav>
 
-  <div>
-    <a href="{{ routes.cart_url }}">
+  <div class="header__actions actions">
+    <a class="actions__cart" href="{{ routes.cart_url }}">
       {{ 'icon-shopping-bag.svg' | inline_asset_content }}
     </a>
 
     {% if shop.customer_accounts_enabled %}
       {% if customer %}
-        <a href="{{ routes.account_url }}">account</a>
-        {{ 'Log out' | customer_logout_link }}
+        <a class="actions__link" href="{{ routes.account_url }}">Account</a>
+        <a class="actions__link" href="{{ routes.account_logout_url }}">Log out</a>
       {% else %}
-        {{ 'Log in ' | customer_login_link }}
-        {{ 'Register' | customer_register_link }}
+        <a class="actions__link" href="{{ routes.account_login_url }}">Log in</a>
+        <a class="actions__link" href="{{ routes.account_register_url }}">Register</a>
       {% endif %}
     {% endif %}
   </div>
@@ -54,6 +48,12 @@
       "label": "Title",
       "info": "This is a title of the Menu",
       "default": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Header Menu",
+      "default": "main-menu"
     }
   ]
 }

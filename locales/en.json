@@ -1,0 +1,17 @@
+{
+  "products": {
+    "product": {
+      "banner": {
+        "not_found": "Product not found.",
+        "highly_rated": "Highly rated",
+        "in_stock_count": "{{ count }} in stock",
+        "in_stock": "in stock",
+        "in_stock_all_sizes": "in stock (all sizes)",
+        "available": "Available",
+        "unavailable": "Out of stock",
+        "select_size": "Select size",
+        "add_to_bag": "Add to bag"
+      }
+    }
+  }
+}

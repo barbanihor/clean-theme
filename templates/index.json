@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "header": {
+      "type": "header"
+    },
+    "slideshow": {
+      "type": "slideshow"
+    },
+    "banner_product": {
+      "type": "banner-product"
+    }
+  },
+  "order": ["slideshow", "banner_product"]
+}
