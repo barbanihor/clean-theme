@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{  request.locale.iso_code}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ content_for_header }}
+    <title>{{ shop.name | escape }}</title>
+  </head>
+  <body>
+    {{ section 'header' }}
+    <h1 id="page-title">About us</h1>
+    <main id="main" role="main" aria-labelledby="page-title">
+      {{ content_for_layout }}
+    </main>
+    {{ section 'footer' }}
+  </body>
+</html>
