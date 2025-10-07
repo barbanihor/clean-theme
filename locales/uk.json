@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "products": {
+    "product": {
+      "banner": {
+        "not_found": "Товар не знайдено.",
+        "highly_rated": "Високо оцінений",
+        "in_stock_count": "{{ count }} шт. в наявності",
+        "in_stock": "в наявності",
+        "in_stock_all_sizes": "в наявності (усі розміри)",
+        "available": "Доступно",
+        "unavailable": "Немає в наявності",
+        "select_size": "Оберіть розмір",
+        "add_to_bag": "Додати в кошик"
+      }
+    }
+  },
+  "header": {
+    "cart": "Кошик",
+    "account": "Акаунт",
+    "login": "Увійти",
+    "logout": "Вийти",
+    "register": "Зареєструватися",
+    "logo_aria": "Головна сторінка"
+  },
+  "footer": {
+    "login": "Увійти",
+    "search": "Пошук",
+    "copyright": "",
+    "resources": "Ресурси",
+    "find_store": "Знайти магазин",
+    "become_member": "Стати учасником",
+    "feedback": "Зворотній зв'язок",
+    "promo_codes": "Промокоди",
+    "help": "Допомога",
+    "get_help": "Отримати допомогу",
+    "order_status": "Статус замовлення",
+    "shipping": "Доставка",
+    "returns": "Повернення",
+    "payment_options": "Способи оплати",
+    "company": "Компанія",
+    "about": "Про нас",
+    "news": "Новини",
+    "careers": "Кар'єра",
+    "investors": "Інвестори",
+    "sustainability": "Сталий розвиток",
+    "menu": "Меню",
+    "new_featured": "Нове та популярне",
+    "men": "Чоловікам",
+    "women": "Жінкам",
+    "kids": "Дітям"
+  },
+  "a11y": {
+    "footer_nav": "Навігація футера",
+    "main_nav": "Головна навігація",
+    "open_cart": "Відкрити кошик"
+  }
+}

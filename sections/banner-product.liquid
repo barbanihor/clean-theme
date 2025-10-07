@@ -1,0 +1,409 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+{{ 'banner-product.css' | asset_url | stylesheet_tag }}
+
+{%- assign product = all_products[section.settings.product] -%}
+{%- if product == blank -%}
+  <p>{{ 'products.product.banner.not_found' | t }}</p>
+{%- else -%}
+  <div class="banner-product__container">
+    <div class="banner-product__gallery">
+      {%- unless product.images == blank -%}
+        <div class="banner-product__thumbs swiper">
+          <div class="swiper-wrapper">
+            {%- assign white_images = product.images | where_exp: 'img', "img.src contains 'white'" -%}
+            {%- for image in white_images limit: 5 -%}
+              <div class="swiper-slide">
+                <img
+                  width="88"
+                  height="88"
+                  src="{{ image | image_url: width: 88, height: 88 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                >
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endunless -%}
+      <div class="banner-product__selected-photo">
+        {%- if section.settings.rated -%}
+          <div class="banner-product__highly-rated">
+            <div class="banner-product__star">{{ 'star-small.svg' | inline_asset_content }}</div>
+            <div class="banner-product__star-text">
+              {{ 'products.product.banner.highly_rated' | t }}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="banner-product__swiper swiper">
+          <div class="swiper-wrapper">
+            {%- unless product.images == blank -%}
+              {%- assign white_images = product.images | where_exp: 'img', "img.src contains 'white'" -%}
+              {%- for image in white_images limit: 5 -%}
+                <div class="swiper-slide">
+                  <img
+                    width="536"
+                    height="536"
+                    src="{{ image | image_url: width: 536, height: 536 }}"
+                    alt="{{ image.alt | default: product.title | escape }}"
+                  >
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="swiper-slide">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-product__form">
+      <div class="banner-product__intro">
+        <h1 class="banner-product__title">{{ product.title | escape }}</h1>
+
+        {%- assign selected_variant = product.selected_or_first_available_variant -%}
+
+        <div class="banner-product__price-wrapper">
+          <div class="banner-product__price" id="variant-price">
+            {%- render 'price-block', variant: selected_variant -%}
+          </div>
+          <div class="banner-product__availability" id="variant-availability">
+            {%- if selected_variant.available -%}
+              {%- if selected_variant.inventory_quantity > 0 -%}
+                <span class="banner-product__stock-count">
+                  {{-
+                    'products.product.banner.in_stock_count'
+                    | t: count: selected_variant.inventory_quantity
+                    | default: selected_variant.inventory_quantity
+                  }}
+                  {{ 'products.product.banner.in_stock' | t | default: 'в наявності' -}}
+                </span>
+              {%- else -%}
+                <span class="banner-product__stock-available">
+                  {{- 'products.product.banner.available' | t | default: 'Доступно' -}}
+                </span>
+              {%- endif -%}
+            {%- else -%}
+              <span class="banner-product__stock-unavailable">
+                {{- 'products.product.banner.unavailable' | t | default: 'Немає в наявності' -}}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <form method="post" action="/cart/add" id="banner-product-form">
+        <input
+          type="hidden"
+          name="id"
+          id="product-variant-id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+        >
+
+        <div class="banner-product__variants">
+          {%- if product.variants != blank -%}
+            {%- assign seen_colors = '' -%}
+
+            <div class="banner-product__colors">
+              {%- for variant in product.variants -%}
+                {%- assign color = variant.option1 -%}
+                {%- unless seen_colors contains color -%}
+                  {%- assign seen_colors = seen_colors | append: color | append: ',' -%}
+                  {%- render 'color-button', variant: variant, is_first: forloop.first -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+
+            {%- assign seen_sizes = '' -%}
+            {%- assign has_sizes = false -%}
+
+            {%- for variant in product.variants -%}
+              {%- if variant.option2 != blank -%}
+                {%- assign has_sizes = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if has_sizes -%}
+              <h3 class="banner-product__sizes-title">
+                {{ 'products.product.banner.select_size' | t }}
+              </h3>
+              <div class="banner-product__sizes">
+                {%- for variant in product.variants -%}
+                  {%- if variant.option2 != blank -%}
+                    {%- assign size = variant.option2 -%}
+                    {%- unless seen_sizes contains size -%}
+                      {%- assign seen_sizes = seen_sizes | append: size | append: ',' -%}
+                      <button type="button" name="size" class="banner-product__size" data-size="{{ variant.option2 }}">
+                        {{ variant.option2 }}
+                      </button>
+                    {%- endunless -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+
+        <button class="banner-product__submit-btn" type="submit">
+          {{ 'products.product.banner.add_to_bag' | t }}
+        </button>
+      </form>
+
+      {%- if section.settings.content != blank -%}
+        <p class="banner-product__content">{{ section.settings.content }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const productImages = {
+    {% for image in product.images %}
+    "{{ image.src | split: '/' | last | split: '.' | first }}": {
+      src: "{{ image | image_url: width: 536, height: 536 }}",
+      thumb: "{{ image | image_url: width: 88, height: 88 }}",
+      alt: "{{ image.alt | escape }}"
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+
+  const productVariants = [
+    {% for variant in product.variants %}
+    {
+      id: {{ variant.id }},
+      options: {{ variant.options | json }},
+      available: {{ variant.available | json }},
+      price: {{ variant.price }},
+      compare_at_price: {{ variant.compare_at_price | default: 0 }},
+      inventory_quantity: {{ variant.inventory_quantity | default: 0 }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const colorButtons = document.querySelectorAll('.banner-product__color');
+    const sizeButtons = document.querySelectorAll('.banner-product__size');
+    const variantIdInput = document.getElementById('product-variant-id');
+    const variantPriceContainer = document.getElementById('variant-price');
+    const variantAvailabilityContainer = document.getElementById('variant-availability');
+    const submitButton = document.querySelector('.banner-product__submit-btn');
+    const form = document.getElementById('banner-product-form');
+
+    let selectedOptions = {
+      color: colorButtons[0]?.getAttribute('data-color-name') || '',
+      size: ''
+    };
+
+    const thumbsSwiper = new Swiper('.banner-product__thumbs', {
+      spaceBetween: 8,
+      slidesPerView: 'auto',
+      direction: 'vertical',
+      watchSlidesProgress: true,
+      slideToClickedSlide: true,
+    });
+
+    const mainSwiper = new Swiper('.banner-product__swiper', {
+      spaceBetween: 10,
+      thumbs: {
+        swiper: thumbsSwiper,
+      },
+    });
+
+    function formatMoney(cents) {
+      return (cents / 100).toFixed(2);
+    }
+
+    function updateVariantInfo() {
+      if (!selectedOptions.size) {
+        const colorVariants = productVariants.filter(variant => {
+          return variant.options[0].toLowerCase() === selectedOptions.color.toLowerCase();
+        });
+
+        if (colorVariants.length > 0) {
+          const firstVariant = colorVariants[0];
+          variantIdInput.value = firstVariant.id;
+
+          let priceHTML = '';
+          if (firstVariant.compare_at_price > firstVariant.price) {
+            priceHTML = `
+              <span class="banner-product__price-sale" data-price>$${formatMoney(firstVariant.price)}</span>
+              <s class="banner-product__compare-price" data-compare-price>$${formatMoney(firstVariant.compare_at_price)}</s>
+            `;
+          } else {
+            priceHTML = `<span class="banner-product__price-regular" data-price>$${formatMoney(firstVariant.price)}</span>`;
+          }
+          variantPriceContainer.innerHTML = priceHTML;
+
+          const totalStock = colorVariants.reduce((sum, v) => sum + v.inventory_quantity, 0);
+          const hasAvailable = colorVariants.some(v => v.available);
+
+          let availabilityHTML = '';
+          if (hasAvailable) {
+            if (totalStock > 0) {
+              availabilityHTML = `<span class="banner-product__stock-count">${totalStock} {{ 'products.product.banner.in_stock_all_sizes' | t | default: 'в наявності (всі розміри)' }}</span>`;
+            } else {
+              availabilityHTML = `<span class="banner-product__stock-available">{{ 'products.product.banner.available' | t | default: 'Доступно' }}</span>`;
+            }
+          } else {
+            availabilityHTML = `<span class="banner-product__stock-unavailable">{{ 'products.product.banner.unavailable' | t | default: 'Немає в наявності' }}</span>`;
+          }
+          variantAvailabilityContainer.innerHTML = availabilityHTML;
+
+          if (!hasAvailable || totalStock === 0) {
+            submitButton.disabled = true;
+            submitButton.classList.add('banner-product__submit-btn--disabled');
+          } else {
+            submitButton.disabled = false;
+            submitButton.classList.remove('banner-product__submit-btn--disabled');
+          }
+        }
+        return;
+      }
+
+      const selectedVariant = productVariants.find(variant => {
+        return variant.options.every((option, index) => {
+          if (index === 0) return option.toLowerCase() === selectedOptions.color.toLowerCase();
+          if (index === 1) return option === selectedOptions.size;
+          return true;
+        });
+      });
+
+      if (selectedVariant) {
+        variantIdInput.value = selectedVariant.id;
+
+        let priceHTML = '';
+        if (selectedVariant.compare_at_price > selectedVariant.price) {
+          priceHTML = `
+            <span class="banner-product__price-sale" data-price>$${formatMoney(selectedVariant.price)}</span>
+            <s class="banner-product__compare-price" data-compare-price>$${formatMoney(selectedVariant.compare_at_price)}</s>
+          `;
+        } else {
+          priceHTML = `<span class="banner-product__price-regular" data-price>$${formatMoney(selectedVariant.price)}</span>`;
+        }
+        variantPriceContainer.innerHTML = priceHTML;
+
+        let availabilityHTML = '';
+        if (selectedVariant.available) {
+          if (selectedVariant.inventory_quantity > 0) {
+            availabilityHTML = `<span class="banner-product__stock-count">${selectedVariant.inventory_quantity} {{ 'products.product.banner.in_stock' | t | default: 'в наявності' }}</span>`;
+          } else {
+            availabilityHTML = `<span class="banner-product__stock-available">{{ 'products.product.banner.available' | t | default: 'Доступно' }}</span>`;
+          }
+        } else {
+          availabilityHTML = `<span class="banner-product__stock-unavailable">{{ 'products.product.banner.unavailable' | t | default: 'Немає в наявності' }}</span>`;
+        }
+        variantAvailabilityContainer.innerHTML = availabilityHTML;
+      }
+    }
+
+    function updateGallery(colorName) {
+      const filteredImages = Object.entries(productImages)
+        .filter(([filename]) => filename.toLowerCase().includes(colorName))
+        .slice(0, 5);
+
+      mainSwiper.removeAllSlides();
+      thumbsSwiper.removeAllSlides();
+
+      filteredImages.forEach(([filename, imageData]) => {
+        mainSwiper.appendSlide(`
+          <div class="swiper-slide">
+            <img src="${imageData.src}" alt="${imageData.alt}" width="536" height="536">
+          </div>
+        `);
+
+        thumbsSwiper.appendSlide(`
+          <div class="swiper-slide">
+            <img src="${imageData.thumb}" alt="${imageData.alt}" width="88" height="88">
+          </div>
+        `);
+      });
+
+      mainSwiper.slideTo(0);
+      thumbsSwiper.slideTo(0);
+    }
+
+    colorButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        const colorName = this.getAttribute('data-color-name');
+
+        if (colorName) {
+          selectedOptions.color = colorName;
+          updateGallery(colorName);
+          updateVariantInfo();
+        }
+
+        colorButtons.forEach((btn) => btn.classList.remove('banner-product__btn--active'));
+        this.classList.add('banner-product__btn--active');
+      });
+    });
+
+    sizeButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        const size = this.getAttribute('data-size');
+        selectedOptions.size = size;
+        updateVariantInfo();
+
+        sizeButtons.forEach((btn) => btn.classList.remove('banner-product__btn--active'));
+        this.classList.add('banner-product__btn--active');
+      });
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantIdInput.value,
+          quantity: 1
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = '/cart';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Banner",
+  "tag": "section",
+  "class": "banner-product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "rated",
+      "label": "Show highly rated badge",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Product description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Banner"
+    }
+  ]
+}
+{% endschema %}

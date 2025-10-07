@@ -1,0 +1,82 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu-title": "Menu",
+        "menu": "main-menu"
+      }
+    },
+    "slideshow": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_eCApAg": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slide-1.jpg",
+            "image_overlay_opacity": 0
+          }
+        },
+        "slide_NbDUTy": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slide-2.jpg",
+            "image_overlay_opacity": 0
+          }
+        },
+        "slide_abcAHj": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/slide-3.jpg",
+            "image_overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "slide_eCApAg",
+        "slide_NbDUTy",
+        "slide_abcAHj"
+      ],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "auto_rotate": true,
+        "change_slides_speed": 5,
+        "image_behavior": "ambient",
+        "show_text_below": true,
+        "accessibility_info": "Slideshow about our brand",
+        "heading": "More than just shoes — it's a part of your story.",
+        "subheading": "Original sneakers from Nike and other top brands that make every step feel special.",
+        "button_label": "Shop the Collection",
+        "button_link": "shopify://collections/nike-collection"
+      }
+    },
+    "banner_product": {
+      "type": "banner-product",
+      "settings": {
+        "product": "nike-air-max-plus",
+        "rated": true,
+        "content": "Let your attitude have the edge in your Nike Air Max Plus, a Tuned Air experience that offers premium stability and unbelievable cushioning."
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "slideshow",
+    "banner_product",
+    "footer"
+  ]
+}
