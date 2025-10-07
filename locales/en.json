@@ -23,12 +23,44 @@
       }
     }
   },
+  "header": {
+    "cart": "Cart",
+    "account": "Account",
+    "login": "Log in",
+    "logout": "Log out",
+    "register": "Register",
+    "logo_aria": "Home"
+  },
   "footer": {
     "login": "Login",
     "search": "Search",
-    "copyright": ""
+    "copyright": "",
+    "resources": "Resources",
+    "find_store": "Find a Store",
+    "become_member": "Become a Member",
+    "feedback": "Feedback",
+    "promo_codes": "Promo Codes",
+    "help": "Help",
+    "get_help": "Get Help",
+    "order_status": "Order Status",
+    "shipping": "Shipping and Delivery",
+    "returns": "Returns",
+    "payment_options": "Payment Options",
+    "company": "Company",
+    "about": "About Nike",
+    "news": "News",
+    "careers": "Careers",
+    "investors": "Investors",
+    "sustainability": "Sustainability",
+    "menu": "Menu",
+    "new_featured": "New & Featured",
+    "men": "Men",
+    "women": "Women",
+    "kids": "Kids"
   },
   "a11y": {
-    "footer_nav": "Footer navigation"
+    "footer_nav": "Footer navigation",
+    "main_nav": "Main navigation",
+    "open_cart": "Open cart"
   }
 }

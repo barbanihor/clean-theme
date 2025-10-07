@@ -1,0 +1,10 @@
+<nav class="header__navbar navbar" aria-label="{{ 'a11y.main_nav' | t | default: 'Main navigation' }}">
+  <ul class="navbar__list">
+    {%- assign main_menu_linklist = linklists['main-menu'] -%}
+    {%- for link in main_menu_linklist.links -%}
+      <li class="navbar__list-item">
+        <a class="navbar__list-link" href="{{ link.url }}">{{ link.title }}</a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

@@ -11,10 +11,10 @@
     <title>{{ shop.name | escape }}</title>
   </head>
   <body>
-    {{ section 'header' }}
+    {% section 'header' %}
     <main id="main" role="main" aria-labelledby="page-title">
       {{ content_for_layout }}
     </main>
-    {{ section 'footer' }}
+    {% section 'footer' %}
   </body>
 </html>

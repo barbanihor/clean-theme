@@ -1,40 +1,24 @@
 {{ 'header.css' | asset_url | stylesheet_tag }}
 
-<header class="header">
-  <div class="header__logo">
-    {{ 'logo.svg' | inline_asset_content }}
-  </div>
+<header class="header" role="banner">
+  {%- render 'logo' -%}
 
-  <nav class="header__navbar navbar">
-    <ul class="navbar__list">
-      {%- if section.settings.menu.links == blank -%}
-        {%- assign main_menu_linklist = linklists['stellar-menu'] -%}
-      {%- else -%}
-        {% assign main_menu_linklist = section.settings.menu.links %}
-      {%- endif -%}
-
-      {% for link in main_menu_linklist %}
-        <li class="navbar__list-item">
-          <a class="navbar__list-link" href="{{ link.url }}">{{ link.title }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  </nav>
+  {%- render 'nav-main' -%}
 
   <div class="header__actions actions">
-    <a class="actions__cart" href="{{ routes.cart_url }}">
-      {{ 'icon-shopping-bag.svg' | inline_asset_content }}
+    <a class="actions__cart" href="{{ routes.cart_url }}" aria-label="{{ 'a11y.open_cart' | t | default: 'Open cart' }}">
+      {%- render 'icon-cart' -%}
     </a>
 
-    {% if shop.customer_accounts_enabled %}
-      {% if customer %}
-        <a class="actions__link" href="{{ routes.account_url }}">Account</a>
-        <a class="actions__link" href="{{ routes.account_logout_url }}">Log out</a>
-      {% else %}
-        <a class="actions__link" href="{{ routes.account_login_url }}">Log in</a>
-        <a class="actions__link" href="{{ routes.account_register_url }}">Register</a>
-      {% endif %}
-    {% endif %}
+    {%- if shop.customer_accounts_enabled -%}
+      {%- if customer -%}
+        <a class="actions__link" href="{{ routes.account_url }}">{{ 'header.account' | t | default: 'Account' }}</a>
+        <a class="actions__link" href="{{ routes.account_logout_url }}">{{ 'header.logout' | t | default: 'Log out' }}</a>
+      {%- else -%}
+        <a class="actions__link" href="{{ routes.account_login_url }}">{{ 'header.login' | t | default: 'Log in' }}</a>
+        <a class="actions__link" href="{{ routes.account_register_url }}">{{ 'header.register' | t | default: 'Register' }}</a>
+      {%- endif -%}
+    {%- endif -%}
   </div>
 </header>
 
@@ -42,13 +26,6 @@
 {
   "name": "Header",
   "settings": [
-    {
-      "type": "text",
-      "id": "menu-title",
-      "label": "Title",
-      "info": "This is a title of the Menu",
-      "default": "Menu"
-    },
     {
       "type": "link_list",
       "id": "menu",
