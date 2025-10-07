@@ -1,0 +1,56 @@
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__column">
+        <h3 class="footer__title">Resources</h3>
+        <ul class="footer__list">
+          <li class="footer__item"><a href="#" class="footer__link">Find a Store</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Become a Member</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Feedback</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Promo Codes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__column">
+        <h3 class="footer__title">Help</h3>
+        <ul class="footer__list">
+          <li class="footer__item"><a href="#" class="footer__link">Get Help</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Order Status</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Shipping and Delivery</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Returns</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Payment Options</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__column">
+        <h3 class="footer__title">Company</h3>
+        <ul class="footer__list">
+          <li class="footer__item"><a href="#" class="footer__link">About Nike</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">News</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Careers</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Investors</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Sustainability</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__column">
+        <h3 class="footer__title">Menu</h3>
+        <ul class="footer__list">
+          <li class="footer__item"><a href="#" class="footer__link">New & Featured</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Men</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Women</a></li>
+          <li class="footer__item"><a href="#" class="footer__link">Kids</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="footer__nav" aria-label="{{ 'a11y.footer_nav' | t }}">
+      <a href="{{ routes.account_login_url }}" class="footer__nav-link">{{ 'footer.login' | t }}</a>
+      <a href="{{ routes.search_url }}" class="footer__nav-link">{{ 'footer.search' | t }}</a>
+    </nav>
+
+    <small class="footer__copyright">&copy; {{ 'footer.copyright' | t }} {{ shop.name | escape }}</small>
+  </div>
+</footer>

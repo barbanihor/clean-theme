@@ -13,5 +13,13 @@
         "add_to_bag": "Add to bag"
       }
     }
+  },
+  "footer": {
+    "login": "Login",
+    "search": "Search",
+    "copyright": ""
+  },
+  "a11y": {
+    "footer_nav": "Footer navigation"
   }
 }

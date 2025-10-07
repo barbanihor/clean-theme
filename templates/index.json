@@ -8,7 +8,10 @@
     },
     "banner_product": {
       "type": "banner-product"
+    },
+    "footer": {
+      "type": "footer"
     }
   },
-  "order": ["slideshow", "banner_product"]
+  "order": ["header", "slideshow", "banner_product", "footer"]
 }
