@@ -47,7 +47,19 @@
         "rated": true,
         "content": "Let your attitude have the edge in your Nike Air Max Plus, a Tuned Air experience that offers premium stability and unbelievable cushioning."
       }
+    },
+    "promo_banners": {
+      "type": "promo-banners",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "title": "Promo Banners",
+        "subtitle": "",
+        "text_alignment": "left",
+        "section_padding": 20,
+        "color_schema": "light"
+      }
     }
   },
-  "order": ["slideshow", "banner_product"]
+  "order": ["slideshow", "banner_product", "promo_banners"]
 }

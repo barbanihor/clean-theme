@@ -1,0 +1,362 @@
+{{ 'featured-products.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collection = section.settings.collection
+  assign products_limit = section.settings.products_limit
+  assign show_price = section.settings.show_price
+  assign show_rating = section.settings.show_rating
+  assign show_add_to_cart = section.settings.show_add_to_cart
+  assign sort_by = section.settings.sort_by
+-%}
+
+<div class="featured-products" id="featured-products-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="featured-products__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if collection != blank %}
+      <!-- Sorting Filters -->
+      <div class="featured-products__filters">
+        <label for="sort-by-{{ section.id }}">{{ 'products.sorting.title' | t | default: 'Sort by:' }}</label>
+        <select
+          id="sort-by-{{ section.id }}"
+          class="featured-products__sort-select"
+          data-section-id="{{ section.id }}"
+        >
+          <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>
+            {{ 'products.sorting.featured' | t | default: 'Featured' }}
+          </option>
+          <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>
+            {{ 'products.sorting.best_selling' | t | default: 'Best Selling' }}
+          </option>
+          <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>
+            {{ 'products.sorting.price_low' | t | default: 'Price: Low to High' }}
+          </option>
+          <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>
+            {{ 'products.sorting.price_high' | t | default: 'Price: High to Low' }}
+          </option>
+          <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>
+            {{ 'products.sorting.az' | t | default: 'Alphabetically: A-Z' }}
+          </option>
+          <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>
+            {{ 'products.sorting.za' | t | default: 'Alphabetically: Z-A' }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="featured-products__grid" id="products-grid-{{ section.id }}">
+        {% assign sorted_products = collection.products | sort: sort_by %}
+
+        {% for product in sorted_products limit: products_limit %}
+          <div class="featured-products__item" data-product-id="{{ product.id }}">
+            <!-- Product Image -->
+            <a href="{{ product.url }}" class="featured-products__image-wrapper">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 400 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="featured-products__image"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'featured-products__image placeholder' }}
+              {% endif %}
+            </a>
+
+            <!-- Product Info -->
+            <div class="featured-products__info">
+              <h3 class="featured-products__title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+
+              {% if show_rating %}
+                <div class="featured-products__rating">
+                  {% render 'product-rating', product: product %}
+                </div>
+              {% endif %}
+
+              {% if show_price %}
+                <div class="featured-products__price">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="featured-products__price--compare">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                    <span class="featured-products__price--sale">
+                      {{ product.price | money }}
+                    </span>
+                  {% else %}
+                    <span class="featured-products__price--regular">
+                      {{ product.price | money }}
+                    </span>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              {% if show_add_to_cart %}
+                {% if product.available %}
+                  <button
+                    type="button"
+                    class="featured-products__add-to-cart"
+                    data-product-id="{{ product.id }}"
+                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                    aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}"
+                  >
+                    {{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}
+                  </button>
+                {% else %}
+                  <button
+                    type="button"
+                    class="featured-products__add-to-cart featured-products__add-to-cart--disabled"
+                    disabled
+                  >
+                    {{ 'products.product.sold_out' | t | default: 'Sold out' }}
+                  </button>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="featured-products__empty">
+        <p>{{ 'sections.featured_products.no_collection' | t | default: 'Please select a collection in the section settings.' }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sectionId = '{{ section.id }}';
+  const sortSelect = document.querySelector(`#sort-by-${sectionId}`);
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', async function(e) {
+      const sortBy = e.target.value;
+      const sectionContainer = document.querySelector(`#featured-products-${sectionId}`);
+
+      if (!sectionContainer) return;
+
+      // Show loading state
+      sectionContainer.classList.add('loading');
+
+      try {
+        // Build the URL with section rendering API
+        const url = new URL(window.location.href);
+        url.searchParams.set('section_id', sectionId);
+        url.searchParams.set('sort_by', sortBy);
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch section');
+        }
+
+        const html = await response.text();
+
+        // Parse the HTML response
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newSection = doc.querySelector(`#featured-products-${sectionId}`);
+
+        if (newSection) {
+          // Replace the entire section
+          sectionContainer.innerHTML = newSection.innerHTML;
+
+          // Reinitialize event listeners for the new content
+          initializeAddToCart(sectionId);
+        }
+
+      } catch (error) {
+        console.error('Error updating products:', error);
+      } finally {
+        sectionContainer.classList.remove('loading');
+      }
+    });
+  }
+
+  // Initialize add to cart functionality
+  initializeAddToCart(sectionId);
+
+  function initializeAddToCart(sectionId) {
+    const addToCartButtons = document.querySelectorAll(`#featured-products-${sectionId} .featured-products__add-to-cart:not(.featured-products__add-to-cart--disabled)`);
+
+    addToCartButtons.forEach(button => {
+      // Remove existing listeners by cloning
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+
+      newButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const variantId = this.dataset.variantId;
+        const originalText = this.textContent;
+
+        if (!variantId) return;
+
+        // Disable button and show loading state
+        this.disabled = true;
+        this.textContent = '{{ 'products.product.adding' | t | default: 'Adding...' }}';
+
+        try {
+          // Add to cart via Fetch API
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 1
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to add to cart');
+          }
+
+          const data = await response.json();
+
+          // Success feedback
+          this.textContent = '{{ 'products.product.added' | t | default: 'Added!' }}';
+          this.classList.add('featured-products__add-to-cart--success');
+
+          // Update cart drawer/mini-cart if it exists
+          await updateMiniCart();
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            this.textContent = originalText;
+            this.classList.remove('featured-products__add-to-cart--success');
+            this.disabled = false;
+          }, 2000);
+
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+          this.textContent = '{{ 'products.product.error' | t | default: 'Error' }}';
+          this.classList.add('featured-products__add-to-cart--error');
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            this.textContent = originalText;
+            this.classList.remove('featured-products__add-to-cart--error');
+            this.disabled = false;
+          }, 2000);
+        }
+      });
+    });
+  }
+
+  async function updateMiniCart() {
+    try {
+      // Fetch cart data
+      const response = await fetch('/cart.js');
+      const cart = await response.json();
+
+      // Update cart count if element exists
+      const cartCountElements = document.querySelectorAll('.cart-count, [data-cart-count]');
+      cartCountElements.forEach(element => {
+        element.textContent = cart.item_count;
+      });
+
+      // Trigger custom event for other components to listen to
+      document.dispatchEvent(new CustomEvent('cart:updated', {
+        detail: { cart }
+      }));
+
+    } catch (error) {
+      console.error('Error updating mini cart:', error);
+    }
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "select",
+      "id": "sort_by",
+      "label": "Default sort order",
+      "options": [
+        {
+          "value": "manual",
+          "label": "Featured"
+        },
+        {
+          "value": "best-selling",
+          "label": "Best Selling"
+        },
+        {
+          "value": "price-ascending",
+          "label": "Price: Low to High"
+        },
+        {
+          "value": "price-descending",
+          "label": "Price: High to Low"
+        },
+        {
+          "value": "title-ascending",
+          "label": "Alphabetically: A-Z"
+        },
+        {
+          "value": "title-descending",
+          "label": "Alphabetically: Z-A"
+        }
+      ],
+      "default": "manual"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating",
+      "default": false,
+      "info": "Requires product rating app or snippet"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show 'Add to Cart' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}
