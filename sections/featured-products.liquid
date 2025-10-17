@@ -1,291 +1,141 @@
-{{ 'featured-products.css' | asset_url | stylesheet_tag }}
-
-{%- liquid
+{% liquid
   assign collection = section.settings.collection
-  assign products_limit = section.settings.products_limit
-  assign show_price = section.settings.show_price
-  assign show_rating = section.settings.show_rating
-  assign show_add_to_cart = section.settings.show_add_to_cart
-  assign sort_by = section.settings.sort_by
--%}
+  assign products_count = section.settings['products-count']
+%}
 
-<div class="featured-products" id="featured-products-{{ section.id }}" data-section-id="{{ section.id }}">
-  <div class="container">
-    {% if section.settings.heading != blank %}
-      <h2 class="featured-products__heading">{{ section.settings.heading }}</h2>
-    {% endif %}
+{% style %}
+  .filter-wrapper {
+    margin-bottom: 20px;
+  }
 
-    {% if collection != blank %}
-      <!-- Sorting Filters -->
-      <div class="featured-products__filters">
-        <label for="sort-by-{{ section.id }}">{{ 'products.sorting.title' | t | default: 'Sort by:' }}</label>
-        <select
-          id="sort-by-{{ section.id }}"
-          class="featured-products__sort-select"
-          data-section-id="{{ section.id }}"
-        >
-          <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>
-            {{ 'products.sorting.featured' | t | default: 'Featured' }}
-          </option>
-          <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>
-            {{ 'products.sorting.best_selling' | t | default: 'Best Selling' }}
-          </option>
-          <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>
-            {{ 'products.sorting.price_low' | t | default: 'Price: Low to High' }}
-          </option>
-          <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>
-            {{ 'products.sorting.price_high' | t | default: 'Price: High to Low' }}
-          </option>
-          <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>
-            {{ 'products.sorting.az' | t | default: 'Alphabetically: A-Z' }}
-          </option>
-          <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>
-            {{ 'products.sorting.za' | t | default: 'Alphabetically: Z-A' }}
-          </option>
-        </select>
-      </div>
+  .product-filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+{% endstyle %}
 
-      <!-- Products Grid -->
-      <div class="featured-products__grid" id="products-grid-{{ section.id }}">
-        {% assign sorted_products = collection.products | sort: sort_by %}
+<h1 class="featured-product__title">{{ section.settings.title }}</h1>
 
-        {% for product in sorted_products limit: products_limit %}
-          <div class="featured-products__item" data-product-id="{{ product.id }}">
-            <!-- Product Image -->
-            <a href="{{ product.url }}" class="featured-products__image-wrapper">
-              {% if product.featured_image %}
-                <img
-                  src="{{ product.featured_image | image_url: width: 400 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  class="featured-products__image"
-                  loading="lazy"
-                  width="400"
-                  height="400"
-                >
-              {% else %}
-                {{ 'product-1' | placeholder_svg_tag: 'featured-products__image placeholder' }}
-              {% endif %}
-            </a>
-
-            <!-- Product Info -->
-            <div class="featured-products__info">
-              <h3 class="featured-products__title">
-                <a href="{{ product.url }}">{{ product.title }}</a>
-              </h3>
-
-              {% if show_rating %}
-                <div class="featured-products__rating">
-                  {% render 'product-rating', product: product %}
-                </div>
-              {% endif %}
-
-              {% if show_price %}
-                <div class="featured-products__price">
-                  {% if product.compare_at_price > product.price %}
-                    <span class="featured-products__price--compare">
-                      {{ product.compare_at_price | money }}
-                    </span>
-                    <span class="featured-products__price--sale">
-                      {{ product.price | money }}
-                    </span>
-                  {% else %}
-                    <span class="featured-products__price--regular">
-                      {{ product.price | money }}
-                    </span>
-                  {% endif %}
-                </div>
-              {% endif %}
-
-              {% if show_add_to_cart %}
-                {% if product.available %}
-                  <button
-                    type="button"
-                    class="featured-products__add-to-cart"
-                    data-product-id="{{ product.id }}"
-                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                    aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}"
-                  >
-                    {{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}
-                  </button>
-                {% else %}
-                  <button
-                    type="button"
-                    class="featured-products__add-to-cart featured-products__add-to-cart--disabled"
-                    disabled
-                  >
-                    {{ 'products.product.sold_out' | t | default: 'Sold out' }}
-                  </button>
-                {% endif %}
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="featured-products__empty">
-        <p>{{ 'sections.featured_products.no_collection' | t | default: 'Please select a collection in the section settings.' }}</p>
-      </div>
-    {% endif %}
+{% if collection != blank %}
+  <div class="filter-wrapper">
+    <label for="filter-{{ section.id }}">Sort by:</label>
+    <select id="filter-{{ section.id }}" class="product-filter-select">
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="title-asc">Title: A-Z</option>
+    </select>
   </div>
-</div>
+
+  <div class="products-container" id="products-{{ section.id }}">
+    {% for product in collection.products limit: products_count %}
+      <div class="product-card" data-price="{{ product.price }}" data-title="{{ product.title }}">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 300, height: 300}}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+        {% else %}
+          <div style="width: 300px; height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-bottom: 10px;">
+            <span style="color: #999;">No image</span>
+          </div>
+        {% endif %}
+        <a href="{{ product.url }}">{{ product.title }}</a>
+
+        {% if section.settings.rating_checkbox %}
+          {% render 'product-rating', product: product %}
+        {% endif %}
+
+        {% if section.settings.price_checkbox %}
+          <p class="product-price">{{ product.price | money }}</p>
+        {% endif %}
+
+        {% if section.settings.checkbox %}
+          <div class="product-card__actions">
+            {% if product.available %}
+              <button
+                class="add-to-cart-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+              >
+                Add to Cart
+              </button>
+            {% else %}
+              <button class="add-to-cart-btn" disabled>Sold Out</button>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Please select a collection in the section settings.</p>
+{% endif %}
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const sectionId = '{{ section.id }}';
-  const sortSelect = document.querySelector(`#sort-by-${sectionId}`);
+  (function () {
+    const select = document.getElementById('filter-{{ section.id }}');
+    const container = document.getElementById('products-{{ section.id }}');
 
-  if (sortSelect) {
-    sortSelect.addEventListener('change', async function(e) {
-      const sortBy = e.target.value;
-      const sectionContainer = document.querySelector(`#featured-products-${sectionId}`);
+    if (!select || !container) return;
 
-      if (!sectionContainer) return;
+    const cards = Array.from(container.querySelectorAll('.product-card'));
 
-      // Show loading state
-      sectionContainer.classList.add('loading');
+    select.addEventListener('change', (e) => {
+      const sorted = [...cards];
 
-      try {
-        // Build the URL with section rendering API
-        const url = new URL(window.location.href);
-        url.searchParams.set('section_id', sectionId);
-        url.searchParams.set('sort_by', sortBy);
+      switch (e.target.value) {
+        case 'price-asc':
+          sorted.sort((a, b) => Number(a.dataset.price) - Number(b.dataset.price));
+          break;
+        case 'price-desc':
+          sorted.sort((a, b) => Number(b.dataset.price) - Number(a.dataset.price));
+          break;
+        case 'title-asc':
+          sorted.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+          break;
+      }
 
-        const response = await fetch(url.toString());
+      sorted.forEach((card) => container.appendChild(card));
+    });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch section');
-        }
+    container.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-to-cart-btn') && !e.target.disabled) {
+        const variantId = e.target.dataset.variantId;
 
-        const html = await response.text();
-
-        // Parse the HTML response
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const newSection = doc.querySelector(`#featured-products-${sectionId}`);
-
-        if (newSection) {
-          // Replace the entire section
-          sectionContainer.innerHTML = newSection.innerHTML;
-
-          // Reinitialize event listeners for the new content
-          initializeAddToCart(sectionId);
-        }
-
-      } catch (error) {
-        console.error('Error updating products:', error);
-      } finally {
-        sectionContainer.classList.remove('loading');
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            alert('Product added to cart!');
+            if (window.theme && window.theme.updateCartCount) {
+              window.theme.updateCartCount();
+            }
+          })
+          .catch(() => alert('Failed to add product.'));
       }
     });
-  }
-
-  // Initialize add to cart functionality
-  initializeAddToCart(sectionId);
-
-  function initializeAddToCart(sectionId) {
-    const addToCartButtons = document.querySelectorAll(`#featured-products-${sectionId} .featured-products__add-to-cart:not(.featured-products__add-to-cart--disabled)`);
-
-    addToCartButtons.forEach(button => {
-      // Remove existing listeners by cloning
-      const newButton = button.cloneNode(true);
-      button.parentNode.replaceChild(newButton, button);
-
-      newButton.addEventListener('click', async function(e) {
-        e.preventDefault();
-
-        const variantId = this.dataset.variantId;
-        const originalText = this.textContent;
-
-        if (!variantId) return;
-
-        // Disable button and show loading state
-        this.disabled = true;
-        this.textContent = '{{ 'products.product.adding' | t | default: 'Adding...' }}';
-
-        try {
-          // Add to cart via Fetch API
-          const response = await fetch('/cart/add.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id: variantId,
-              quantity: 1
-            })
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to add to cart');
-          }
-
-          const data = await response.json();
-
-          // Success feedback
-          this.textContent = '{{ 'products.product.added' | t | default: 'Added!' }}';
-          this.classList.add('featured-products__add-to-cart--success');
-
-          // Update cart drawer/mini-cart if it exists
-          await updateMiniCart();
-
-          // Reset button after 2 seconds
-          setTimeout(() => {
-            this.textContent = originalText;
-            this.classList.remove('featured-products__add-to-cart--success');
-            this.disabled = false;
-          }, 2000);
-
-        } catch (error) {
-          console.error('Error adding to cart:', error);
-          this.textContent = '{{ 'products.product.error' | t | default: 'Error' }}';
-          this.classList.add('featured-products__add-to-cart--error');
-
-          // Reset button after 2 seconds
-          setTimeout(() => {
-            this.textContent = originalText;
-            this.classList.remove('featured-products__add-to-cart--error');
-            this.disabled = false;
-          }, 2000);
-        }
-      });
-    });
-  }
-
-  async function updateMiniCart() {
-    try {
-      // Fetch cart data
-      const response = await fetch('/cart.js');
-      const cart = await response.json();
-
-      // Update cart count if element exists
-      const cartCountElements = document.querySelectorAll('.cart-count, [data-cart-count]');
-      cartCountElements.forEach(element => {
-        element.textContent = cart.item_count;
-      });
-
-      // Trigger custom event for other components to listen to
-      document.dispatchEvent(new CustomEvent('cart:updated', {
-        detail: { cart }
-      }));
-
-    } catch (error) {
-      console.error('Error updating mini cart:', error);
-    }
-  }
-});
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "Featured Products",
+  "name": "featured-products",
   "tag": "section",
   "class": "section-featured-products",
   "settings": [
     {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Featured Products"
+      "id": "title",
+      "label": "Title",
+      "default": "Featured products"
     },
     {
       "type": "collection",
@@ -294,68 +144,30 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     {
       "type": "range",
-      "id": "products_limit",
+      "id": "products-count",
+      "default": 2,
       "min": 2,
       "max": 12,
-      "step": 1,
-      "default": 4,
-      "label": "Number of products to show"
-    },
-    {
-      "type": "select",
-      "id": "sort_by",
-      "label": "Default sort order",
-      "options": [
-        {
-          "value": "manual",
-          "label": "Featured"
-        },
-        {
-          "value": "best-selling",
-          "label": "Best Selling"
-        },
-        {
-          "value": "price-ascending",
-          "label": "Price: Low to High"
-        },
-        {
-          "value": "price-descending",
-          "label": "Price: High to Low"
-        },
-        {
-          "value": "title-ascending",
-          "label": "Alphabetically: A-Z"
-        },
-        {
-          "value": "title-descending",
-          "label": "Alphabetically: Z-A"
-        }
-      ],
-      "default": "manual"
+      "label": "Products per section",
+      "step": 1
     },
     {
       "type": "checkbox",
-      "id": "show_price",
+      "id": "price_checkbox",
       "label": "Show price",
       "default": true
     },
     {
       "type": "checkbox",
-      "id": "show_rating",
+      "id": "rating_checkbox",
       "label": "Show rating",
-      "default": false,
-      "info": "Requires product rating app or snippet"
+      "default": true
     },
     {
       "type": "checkbox",
-      "id": "show_add_to_cart",
-      "label": "Show 'Add to Cart' button",
+      "id": "checkbox",
+      "label": "Add in cart",
       "default": true
-    }
-  ],
-  "presets": [
-    {
-      "name": "Featured Products"
     }
   ]
 }

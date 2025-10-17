@@ -59,7 +59,10 @@
         "section_padding": 20,
         "color_schema": "light"
       }
+    },
+    "featured_products": {
+      "type": "featured-products"
     }
   },
-  "order": ["slideshow", "banner_product", "promo_banners"]
+  "order": ["slideshow", "banner_product", "promo_banners, featured_products"]
 }

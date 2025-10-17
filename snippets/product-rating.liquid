@@ -1,0 +1,74 @@
+{% liquid
+  assign rating = product.metafields.reviews.rating.value | default: 0
+  assign rating_count = product.metafields.reviews.rating_count | default: 0
+  assign rating_decimal = 0
+  assign rating_max = 5
+
+  if rating != blank and rating > 0
+    assign rating_decimal = rating | round: 1
+  endif
+
+  assign rating_floor = rating_decimal | floor
+%}
+
+<div class="product-rating" data-rating="{{ rating_decimal }}">
+  {% if rating_decimal > 0 %}
+    <div class="product-rating__stars">
+      {% for i in (1..rating_max) %}
+        {% assign next_number = rating_decimal | plus: 1 %}
+        {% if i <= rating_decimal %}
+          <span class="product-rating__star product-rating__star--full">★</span>
+        {% elsif i == next_number and rating_decimal != rating_floor %}
+          <span class="product-rating__star product-rating__star--half">★</span>
+        {% else %}
+          <span class="product-rating__star product-rating__star--empty">☆</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if rating_count > 0 %}
+      <span class="product-rating__count">({{ rating_count }})</span>
+    {% endif %}
+  {% else %}
+    <div class="product-rating__stars">
+      {% for i in (1..rating_max) %}
+        <span class="product-rating__star product-rating__star--empty">☆</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .product-rating__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .product-rating__star {
+    color: #ffa41c;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .product-rating__star--empty {
+    color: #ddd;
+  }
+
+  .product-rating__star--half {
+    background: linear-gradient(90deg, #ffa41c 50%, #ddd 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .product-rating__count {
+    font-size: 12px;
+    color: #666;
+  }
+</style>
