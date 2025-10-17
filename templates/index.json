@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "slideshow": {
@@ -25,7 +34,11 @@
           }
         }
       },
-      "block_order": ["slide_eCApAg", "slide_NbDUTy", "slide_abcAHj"],
+      "block_order": [
+        "slide_eCApAg",
+        "slide_NbDUTy",
+        "slide_abcAHj"
+      ],
       "settings": {
         "layout": "full_bleed",
         "slide_height": "medium",
@@ -47,7 +60,82 @@
         "rated": true,
         "content": "Let your attitude have the edge in your Nike Air Max Plus, a Tuned Air experience that offers premium stability and unbelievable cushioning."
       }
+    },
+    "promo_banners": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_Ry6Cgd": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/purple-3.jpg",
+            "title": "Nike air max",
+            "button_text": "To the collection",
+            "button_link": "shopify://collections/nike-collection",
+            "aspect_ratio": "1:1"
+          }
+        },
+        "banner_3JbmMy": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/pexels-dom-j-7304-45982.jpg",
+            "title": "Sweater",
+            "button_text": "To the collection",
+            "button_link": "shopify://collections/summer-collection",
+            "aspect_ratio": "1:1"
+          }
+        },
+        "banner_9mL89J": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/L47445500_51c13ca960d8f39e0d2c9c41631cc3ae.webp",
+            "title": "Salomon collection",
+            "button_text": "To the collection",
+            "button_link": "shopify://collections/shoes",
+            "aspect_ratio": "1:1"
+          }
+        },
+        "banner_rjtXiW": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/pexels-alexandr-borecky-128389-393047.jpg",
+            "title": "Watch collection",
+            "button_text": "To the collection",
+            "button_link": "shopify://collections/women",
+            "aspect_ratio": "1:1"
+          }
+        }
+      },
+      "block_order": [
+        "banner_Ry6Cgd",
+        "banner_3JbmMy",
+        "banner_9mL89J",
+        "banner_rjtXiW"
+      ],
+      "settings": {
+        "title": "Promo Banners",
+        "subtitle": "",
+        "text_alignment": "left",
+        "section_padding": 20,
+        "color_schema": "light"
+      }
+    },
+    "featured_products_hcHrLY": {
+      "type": "featured-products",
+      "name": "Featured products",
+      "settings": {
+        "title": "Featured products",
+        "collection": "nike-collection",
+        "products-count": 12,
+        "price_checkbox": true,
+        "rating_checkbox": true,
+        "checkbox": true
+      }
     }
   },
-  "order": ["slideshow", "banner_product"]
+  "order": [
+    "slideshow",
+    "banner_product",
+    "promo_banners",
+    "featured_products_hcHrLY"
+  ]
 }

@@ -1,0 +1,179 @@
+{% liquid
+  assign collection = section.settings.collection
+  assign products_count = section.settings['products-count']
+%}
+
+{% style %}
+  .filter-wrapper {
+    margin-bottom: 20px;
+  }
+
+  .product-filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+{% endstyle %}
+
+<h1 class="featured-product__title">{{ section.settings.title }}</h1>
+
+{% if collection != blank %}
+  <div class="filter-wrapper">
+    <label for="filter-{{ section.id }}">Sort by:</label>
+    <select id="filter-{{ section.id }}" class="product-filter-select">
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="title-asc">Title: A-Z</option>
+    </select>
+  </div>
+
+  <div class="products-container" id="products-{{ section.id }}">
+    {% for product in collection.products limit: products_count %}
+      <div class="product-card" data-price="{{ product.price }}" data-title="{{ product.title }}">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 300, height: 300}}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="300"
+            height="300"
+            loading="lazy"
+          >
+        {% else %}
+          <div style="width: 300px; height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-bottom: 10px;">
+            <span style="color: #999;">No image</span>
+          </div>
+        {% endif %}
+        <a href="{{ product.url }}">{{ product.title }}</a>
+
+        {% if section.settings.rating_checkbox %}
+          {% render 'product-rating', product: product %}
+        {% endif %}
+
+        {% if section.settings.price_checkbox %}
+          <p class="product-price">{{ product.price | money }}</p>
+        {% endif %}
+
+        {% if section.settings.checkbox %}
+          <div class="product-card__actions">
+            {% if product.available %}
+              <button
+                class="add-to-cart-btn"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+              >
+                Add to Cart
+              </button>
+            {% else %}
+              <button class="add-to-cart-btn" disabled>Sold Out</button>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Please select a collection in the section settings.</p>
+{% endif %}
+
+<script>
+  (function () {
+    const select = document.getElementById('filter-{{ section.id }}');
+    const container = document.getElementById('products-{{ section.id }}');
+
+    if (!select || !container) return;
+
+    const cards = Array.from(container.querySelectorAll('.product-card'));
+
+    select.addEventListener('change', (e) => {
+      const sorted = [...cards];
+
+      switch (e.target.value) {
+        case 'price-asc':
+          sorted.sort((a, b) => Number(a.dataset.price) - Number(b.dataset.price));
+          break;
+        case 'price-desc':
+          sorted.sort((a, b) => Number(b.dataset.price) - Number(a.dataset.price));
+          break;
+        case 'title-asc':
+          sorted.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+          break;
+      }
+
+      sorted.forEach((card) => container.appendChild(card));
+    });
+
+    container.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-to-cart-btn') && !e.target.disabled) {
+        const variantId = e.target.dataset.variantId;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
+        })
+          .then((res) => res.json())
+          .then(() => {
+            alert('Product added to cart!');
+            if (window.theme && window.theme.updateCartCount) {
+              window.theme.updateCartCount();
+            }
+          })
+          .catch(() => alert('Failed to add product.'));
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "featured-products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products-count",
+      "default": 2,
+      "min": 2,
+      "max": 12,
+      "label": "Products per section",
+      "step": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "price_checkbox",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "rating_checkbox",
+      "label": "Show rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "checkbox",
+      "label": "Add in cart",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products"
+    }
+  ]
+}
+{% endschema %}

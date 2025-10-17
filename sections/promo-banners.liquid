@@ -1,0 +1,149 @@
+<div class="promo-banners__header">
+  <h1 class="promo-banners__title">{{ section.settings.title }}</h1>
+  <p class="promo-banners__subtitle">{{ section.settings.subtitle }}</p>
+</div>
+
+<div class="promo-banners__grid">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'banner' %}
+        <div class="promo-banners__item {{ block.shopify_attributes }}">
+          {% render 'banner', block: block %}
+        </div>
+      {% else %}
+
+    {% endcase %}
+  {% endfor %}
+</div>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    --section-padding: {{ section.settings.section_padding | default: 20 }}px;
+    --text-alignment: {{ section.settings.text_alignment | default: "start" }};
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "promo-banners",
+  "tag": "section",
+  "class": "promo-banners",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Promo Banners"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "start",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "color_schema",
+      "label": "Color Schema",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Banner Title"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Aspect Ratio",
+          "default": "1:1",
+          "options": [
+            {
+              "value": "16:9",
+              "label": "16:9"
+            },
+            {
+              "value": "3:2",
+              "label": "3:2"
+            },
+            {
+              "value": "1:1",
+              "label": "1:1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Banners"
+    }
+  ]
+}
+{% endschema %}

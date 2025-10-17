@@ -8,6 +8,8 @@
     {{ content_for_header }}
 
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'promo-banners.css' | asset_url | stylesheet_tag }}
+    {{ 'featured-products.css' | asset_url | stylesheet_tag }}
     <title>{{ shop.name | escape }}</title>
   </head>
   <body>
