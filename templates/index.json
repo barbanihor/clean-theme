@@ -118,11 +118,24 @@
         "section_padding": 20,
         "color_schema": "light"
       }
+    },
+    "featured_products_hcHrLY": {
+      "type": "featured-products",
+      "name": "Featured products",
+      "settings": {
+        "title": "Featured products",
+        "collection": "nike-collection",
+        "products-count": 12,
+        "price_checkbox": true,
+        "rating_checkbox": true,
+        "checkbox": true
+      }
     }
   },
   "order": [
     "slideshow",
     "banner_product",
-    "promo_banners"
+    "promo_banners",
+    "featured_products_hcHrLY"
   ]
 }
