@@ -1,0 +1,48 @@
+{% assign meta = page.metafields.custom %}
+
+<div class="page-width">
+  <h1>{{ meta.simple_text }}</h1>
+  <p>
+    {% for text in meta.simple_text_list.value %}
+      {{ text -}}
+      {%- unless forloop.last %}, {% endunless %}
+    {% endfor %}
+  </p>
+
+  <div>
+    <img src="{{ meta.media.value |  image_url: width: 300  }}" alt="meta image" width="300" height="300">
+  </div>
+
+  <div>
+    {% for image in meta.list_of_media.value %}
+      {{ image | image_url: width: 150 | image_tag: width: 150, height: 150 }}
+    {% endfor %}
+  </div>
+
+  <div>
+    {% assign product = meta.single_product.value %}
+    {{ product.title }}
+  </div>
+
+  <div>
+    {% assign products_list = meta.list_of_products.value %}
+
+    {% for product in products_list %}
+      {{ product.title }}
+    {% endfor %}
+  </div>
+  <div>
+    {{ meta.json }}
+  </div>
+
+  <div>
+    {{ meta.metaobject.value }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Metafields Section",
+  "settings": []
+}
+{% endschema %}

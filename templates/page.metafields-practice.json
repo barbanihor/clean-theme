@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "metafields-practice-section",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

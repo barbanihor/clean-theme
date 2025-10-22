@@ -34,11 +34,7 @@
           }
         }
       },
-      "block_order": [
-        "slide_eCApAg",
-        "slide_NbDUTy",
-        "slide_abcAHj"
-      ],
+      "block_order": ["slide_eCApAg", "slide_NbDUTy", "slide_abcAHj"],
       "settings": {
         "layout": "full_bleed",
         "slide_height": "medium",
@@ -105,12 +101,7 @@
           }
         }
       },
-      "block_order": [
-        "banner_Ry6Cgd",
-        "banner_3JbmMy",
-        "banner_9mL89J",
-        "banner_rjtXiW"
-      ],
+      "block_order": ["banner_Ry6Cgd", "banner_3JbmMy", "banner_9mL89J", "banner_rjtXiW"],
       "settings": {
         "title": "Promo Banners",
         "subtitle": "",
@@ -130,12 +121,11 @@
         "rating_checkbox": true,
         "checkbox": true
       }
+    },
+    "metafields-test": {
+      "type": "custom-metafields",
+      "settings": {}
     }
   },
-  "order": [
-    "slideshow",
-    "banner_product",
-    "promo_banners",
-    "featured_products_hcHrLY"
-  ]
+  "order": ["slideshow", "banner_product", "promo_banners", "featured_products_hcHrLY"]
 }
