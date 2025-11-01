@@ -1,0 +1,138 @@
+{{ 'forms.css' | asset_url | stylesheet_tag }}
+
+<div class="contact-form-wrapper">
+  {% form 'contact', id: 'ContactForm' %}
+    <div class="form-container" aria-busy="false">
+      {% if form.posted_successfully? %}
+        <div role="status" aria-live="polite" class="form-success">
+          {{ 'contact.form.success' | t }}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="form-errors" role="alert" aria-live="assertive">
+          <h3>{{ 'contact.form.errors_title' | t }}</h3>
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      <div class="honeypot" aria-hidden="true">
+        <label for="contact_website">{{ 'contact.form.website' | t }}</label>
+        <input type="text" name="contact[website]" id="contact_website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-field">
+        <label for="contact_name">{{ 'contact.form.name' | t }}</label>
+        <input
+          type="text"
+          name="contact[name]"
+          id="contact_name"
+          value="{{ form.name }}"
+          autocomplete="name"
+          {% if form.errors contains 'name' %}
+            aria-invalid="true" aria-describedby="name-error"
+          {% endif %}
+        >
+        {% if form.errors contains 'name' %}
+          <div id="name-error" class="field-error">
+            {{ form.errors.translated_fields.name | capitalize }}
+            {{ form.errors.messages.name }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        <label for="contact_email">
+          {{ 'contact.form.email' | t }}
+          <span aria-label="{{ 'contact.form.required' | t }}">*</span>
+        </label>
+        <input
+          type="email"
+          name="contact[email]"
+          id="contact_email"
+          value="{{ form.email }}"
+          required
+          autocomplete="email"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true" aria-describedby="email-error"
+          {% endif %}
+        >
+        {% if form.errors contains 'email' %}
+          <div id="email-error" class="field-error">
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        <label for="contact_phone">{{ 'contact.form.phone' | t }}</label>
+        <input
+          type="tel"
+          name="contact[phone]"
+          id="contact_phone"
+          value="{{ form.phone }}"
+          autocomplete="tel"
+          {% if form.errors contains 'phone' %}
+            aria-invalid="true" aria-describedby="phone-error"
+          {% endif %}
+        >
+        {% if form.errors contains 'phone' %}
+          <div id="phone-error" class="field-error">
+            {{ form.errors.translated_fields.phone | capitalize }}
+            {{ form.errors.messages.phone }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        <label for="contact_message">
+          {{ 'contact.form.message' | t }}
+          <span aria-label="{{ 'contact.form.required' | t }}">*</span>
+        </label>
+        <textarea
+          name="contact[body]"
+          id="contact_message"
+          required
+          rows="5"
+          {% if form.errors contains 'body' %}
+            aria-invalid="true" aria-describedby="message-error"
+          {% endif %}
+        >{{ form.body }}</textarea>
+        {% if form.errors contains 'body' %}
+          <div id="message-error" class="field-error">
+            {{ form.errors.translated_fields.body | capitalize }}
+            {{ form.errors.messages.body }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          {{ 'contact.form.submit' | t }}
+        </button>
+      </div>
+    </div>
+  {% endform %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('ContactForm');
+    if (form) {
+      form.addEventListener('submit', function () {
+        const container = this.querySelector('.form-container');
+        const button = this.querySelector('button[type="submit"]');
+        if (container) container.setAttribute('aria-busy', 'true');
+        if (button) button.disabled = true;
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": []
+}
+{% endschema %}

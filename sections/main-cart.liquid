@@ -1,0 +1,272 @@
+{{ 'forms.css' | asset_url | stylesheet_tag }}
+
+<div class="cart-wrapper">
+  <h1 class="cart-title">{{ 'cart.general.title' | t }}</h1>
+
+  {% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
+      <div class="cart-items">
+        {% for item in cart.items %}
+          <div class="cart-item">
+            <div class="cart-item-image">
+              {% if item.image %}
+                <img src="{{ item.image | img_url: '200x200' }}" alt="{{ item.image.alt | escape }}">
+              {% endif %}
+            </div>
+
+            <div class="cart-item-details">
+              <h3 class="cart-item-title">
+                <a href="{{ item.url }}">{{ item.product.title }}</a>
+              </h3>
+
+              {% unless item.product.has_only_default_variant %}
+                <p class="cart-item-variant">{{ item.variant.title }}</p>
+              {% endunless %}
+
+              {% if item.properties %}
+                <div class="cart-item-properties">
+                  {% for property in item.properties %}
+                    {% assign property_first_char = property.first | slice: 0 %}
+                    {% unless property.last == blank or property_first_char == '_' %}
+                      <p class="cart-item-property">
+                        <strong>{{ property.first }}:</strong> {{ property.last }}
+                      </p>
+                    {% endunless %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <p class="cart-item-price">
+                {{ item.final_line_price | money }}
+              </p>
+            </div>
+
+            <div class="cart-item-quantity">
+              <label for="updates_{{ item.key }}">{{ 'cart.label.quantity' | t }}</label>
+              <input
+                type="number"
+                name="updates[]"
+                id="updates_{{ item.key }}"
+                value="{{ item.quantity }}"
+                min="0"
+                data-index="{{ forloop.index }}"
+                class="quantity-input"
+              >
+            </div>
+
+            <div class="cart-item-remove">
+              <a href="{{ item.url_to_remove }}" class="remove-link">{{ 'cart.general.remove' | t }}</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart-footer">
+        <button type="submit" name="update" class="btn btn-secondary">
+          {{ 'cart.general.update' | t }}
+        </button>
+
+        <div class="cart-total">
+          <p class="cart-total-label">{{ 'cart.general.subtotal' | t }}:</p>
+          <p class="cart-total-price">{{ cart.total_price | money }}</p>
+        </div>
+
+        <button type="submit" name="checkout" class="btn btn-primary">
+          {{ 'cart.general.checkout' | t }}
+        </button>
+      </div>
+    </form>
+  {% else %}
+    <div class="cart-empty">
+      <p>{{ 'cart.general.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
+        {{ 'cart.general.continue_shopping' | t }}
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .cart-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .cart-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto auto;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    align-items: start;
+  }
+
+  .cart-item-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+  }
+
+  .cart-item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cart-item-title {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  .cart-item-title a {
+    color: #1f2937;
+    text-decoration: none;
+  }
+
+  .cart-item-title a:hover {
+    text-decoration: underline;
+  }
+
+  .cart-item-variant,
+  .cart-item-property {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .cart-item-properties {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cart-item-price {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+
+  .cart-item-quantity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cart-item-quantity label {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .quantity-input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.375rem;
+    text-align: center;
+  }
+
+  .cart-item-remove {
+    display: flex;
+    align-items: center;
+  }
+
+  .remove-link {
+    color: #dc2626;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .remove-link:hover {
+    text-decoration: underline;
+  }
+
+  .cart-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e5e7eb;
+  }
+
+  .cart-total {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .cart-total-label {
+    margin: 0;
+  }
+
+  .cart-total-price {
+    margin: 0;
+    color: #1f2937;
+  }
+
+  .btn-secondary {
+    background-color: #f3f4f6;
+    color: #1f2937;
+  }
+
+  .btn-secondary:hover {
+    background-color: #e5e7eb;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .cart-empty p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+  }
+
+  @media (max-width: 768px) {
+    .cart-item {
+      grid-template-columns: 80px 1fr;
+      gap: 1rem;
+    }
+
+    .cart-item-quantity,
+    .cart-item-remove {
+      grid-column: 2;
+    }
+
+    .cart-footer {
+      align-items: stretch;
+    }
+
+    .cart-total {
+      flex-direction: column;
+      gap: 0.25rem;
+      align-items: flex-end;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "settings": []
+}
+{% endschema %}

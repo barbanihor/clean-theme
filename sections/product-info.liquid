@@ -1,0 +1,50 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
+<div class="product-info">
+  <div class="product-info__container">
+    {% if product.vendor != blank %}
+      <div class="product-info__vendor">{{ product.vendor }}</div>
+    {% endif %}
+
+    <h1 class="product-info__title" id="page-title">{{ product.title | escape }}</h1>
+
+    <div class="product-info__price">
+      {% if selected_variant.compare_at_price > selected_variant.price %}
+        <div class="product-info__price-wrapper">
+          <span class="product-info__price-sale">{{ selected_variant.price | money }}</span>
+          <span class="product-info__price-regular">{{ selected_variant.compare_at_price | money }}</span>
+          <span class="product-info__badge-sale">{{ 'products.product.on_sale' | t }}</span>
+        </div>
+      {% else %}
+        <span class="product-info__price-current">{{ selected_variant.price | money }}</span>
+      {% endif %}
+    </div>
+
+    <div class="product-info__availability">
+      {% if selected_variant.available %}
+        <span class="product-info__availability-badge product-info__availability-badge--in-stock">
+          {{ 'products.product.banner.in_stock' | t }}
+        </span>
+      {% else %}
+        <span class="product-info__availability-badge product-info__availability-badge--out-of-stock">
+          {{ 'products.product.banner.unavailable' | t }}
+        </span>
+      {% endif %}
+    </div>
+
+    {% if selected_variant.sku != blank %}
+      <div class="product-info__sku">
+        <span class="product-info__sku-label">{{ 'products.product.sku' | t }}:</span>
+        <span class="product-info__sku-value">{{ selected_variant.sku }}</span>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Info",
+  "settings": []
+}
+{% endschema %}
+

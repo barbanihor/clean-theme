@@ -1,0 +1,23 @@
+<div class="product-description">
+  <div class="product-description__container">
+    {% if product.description != blank %}
+      <h2 class="product-description__title">{{ 'products.product.description' | t }}</h2>
+      <div class="product-description__content rte">{{ product.description }}</div>
+    {% endif %}
+
+    {% if product.metafields.custom.features != blank %}
+      <div class="product-description__features">
+        <h3 class="product-description__subtitle">{{ 'products.product.features' | t }}</h3>
+        <div class="product-description__features-content">{{ product.metafields.custom.features }}</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Description",
+  "settings": []
+}
+{% endschema %}
+
