@@ -10,9 +10,10 @@
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'promo-banners.css' | asset_url | stylesheet_tag }}
     {{ 'featured-products.css' | asset_url | stylesheet_tag }}
+    {{ 'product.css' | asset_url | stylesheet_tag }}
     <title>{{ shop.name | escape }}</title>
   </head>
-  <body>
+  <body class="template-{{ template.name }}">
     {% section 'header' %}
     <main id="main" role="main" aria-labelledby="page-title">
       {{ content_for_layout }}

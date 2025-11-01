@@ -1,0 +1,233 @@
+/* Form containers */
+.contact-form-wrapper,
+.product-form-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.form-container {
+  position: relative;
+}
+
+.form-container[aria-busy='true'] {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Form fields */
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Invalid fields */
+.form-field input[aria-invalid='true'],
+.form-field textarea[aria-invalid='true'],
+.form-field select[aria-invalid='true'] {
+  border-color: #c77;
+}
+
+.form-field input[aria-invalid='true']:focus,
+.form-field textarea[aria-invalid='true']:focus,
+.form-field select[aria-invalid='true']:focus {
+  border-color: #c77;
+  box-shadow: 0 0 0 3px rgba(204, 119, 119, 0.15);
+}
+
+/* Error messages */
+.field-error {
+  color: #b55;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-errors {
+  background-color: #fdf5f5;
+  border: 1px solid #e8c8c8;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #a44;
+}
+
+.form-errors h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Success messages */
+.form-success {
+  background-color: #f5faf5;
+  border: 1px solid #c8ddc8;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #4a7c4a;
+}
+
+/* Form field labels for radio groups */
+.form-field-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+/* Radio groups */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  background-color: #ffffff;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+.radio-option:hover {
+  border-color: #3b82f6;
+  background-color: #f8faff;
+}
+
+.radio-option:has(input:checked) {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.radio-option input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.radio-label {
+  font-size: 1rem;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Honeypot (hidden) */
+.honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  visibility: hidden;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+  background-color: #000000;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #333333;
+}
+
+.btn-primary:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Loading states */
+.form-container[aria-busy='true'] .btn {
+  position: relative;
+  color: transparent;
+}
+
+.form-container[aria-busy='true'] .btn::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Availability message */
+.availability-message {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 0.375rem;
+  color: #92400e;
+  font-size: 0.875rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .contact-form-wrapper,
+  .product-form-wrapper {
+    padding: 1rem;
+  }
+
+  .radio-group {
+    flex-direction: column;
+  }
+}

@@ -10,6 +10,9 @@
 {
   "products": {
     "product": {
+      "media": {
+        "view_image": "View image"
+      },
       "banner": {
         "not_found": "Product not found.",
         "highly_rated": "Highly rated",
@@ -20,7 +23,26 @@
         "unavailable": "Out of stock",
         "select_size": "Select size",
         "add_to_bag": "Add to bag"
-      }
+      },
+      "form": {
+        "add_to_cart": "Add to Cart",
+        "quantity": "Quantity",
+        "variant": "Variant",
+        "reason": "Reason for inquiry",
+        "reason_placeholder": "Tell us why you're interested in this product",
+        "contact_preference": "Preferred contact method",
+        "contact_email": "Email",
+        "contact_phone": "Phone",
+        "contact_none": "No contact needed",
+        "sold_out": "Sold Out",
+        "success": "Product added to cart successfully!",
+        "errors_title": "Please fix the following errors:",
+        "unavailable_message": "This variant is currently unavailable."
+      },
+      "on_sale": "Sale",
+      "sku": "SKU",
+      "description": "Description",
+      "features": "Features"
     }
   },
   "header": {
@@ -62,5 +84,33 @@
     "footer_nav": "Footer navigation",
     "main_nav": "Main navigation",
     "open_cart": "Open cart"
+  },
+  "contact": {
+    "form": {
+      "title": "Contact Us",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "website": "Website (do not fill)",
+      "submit": "Send Message",
+      "required": "required",
+      "success": "Thank you for your message. We'll get back to you soon!",
+      "errors_title": "Please fix the following errors:"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Shopping Cart",
+      "empty": "Your cart is currently empty.",
+      "continue_shopping": "Continue Shopping",
+      "update": "Update Cart",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "remove": "Remove"
+    },
+    "label": {
+      "quantity": "Quantity"
+    }
   }
 }

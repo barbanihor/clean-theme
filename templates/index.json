@@ -138,6 +138,10 @@
         "heading": "Our designers",
         "collection": "summer-collection"
       }
+    },
+    "contact-form": {
+      "type": "contact-form",
+      "settings": {}
     }
   },
   "order": [
@@ -145,6 +149,7 @@
     "banner_product",
     "promo_banners",
     "featured_products_hcHrLY",
-    "designers_highlight_TEQ8b7"
+    "designers_highlight_TEQ8b7",
+    "contact-form"
   ]
 }
