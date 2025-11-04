@@ -1,6 +1,6 @@
 {%- if variant.compare_at_price > variant.price -%}
-  <span class="banner-product__price-sale" data-price>{{ variant.price | money }}</span>
-  <s class="banner-product__compare-price" data-compare-price>{{ variant.compare_at_price | money }}</s>
+  <span class="{% if section.settings.dark_mode %}text-white{% endif %}" data-price>{{ variant.price | money }}</span>
+  <s class="line-through decoration-red-600 {% if section.settings.dark_mode %}decoration-red-400 text-gray-300{% endif %}" data-compare-price>{{ variant.compare_at_price | money }}</s>
 {%- else -%}
-  <span class="banner-product__price-regular" data-price>{{ variant.price | money }}</span>
+  <span class="{% if section.settings.dark_mode %}text-white{% endif %}" data-price>{{ variant.price | money }}</span>
 {%- endif -%}
