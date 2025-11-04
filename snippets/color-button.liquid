@@ -1,14 +1,14 @@
 <button
   type="button"
   name="color"
-  class="banner-product__color{% if is_first %} banner-product__btn--active{% endif %}"
+  class="featured-product__color flex border p-0 rounded-lg w-24 h-24 hover:cursor-pointer transition-colors {% if section.settings.dark_mode %}border-gray-600 hover:border-white{% else %}border-transparent hover:border-black{% endif %}{% if is_first %} featured-product__btn--active{% endif %}"
   data-variant-image="{{ variant.featured_image | image_url: width: 536, height: 536 }}"
   data-variant-image-alt="{{ variant.featured_image.alt }}"
   data-color-name="{{ variant.option1 | downcase }}"
   data-variant-id="{{ variant.id }}"
 >
   <img
-    class="banner-product__color-img"
+    class="block object-cover rounded-lg w-full h-full"
     src="{{ variant.featured_image | image_url }}"
     alt="{{ variant.featured_image.alt }}"
     width="88"

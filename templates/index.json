@@ -34,11 +34,7 @@
           }
         }
       },
-      "block_order": [
-        "slide_eCApAg",
-        "slide_NbDUTy",
-        "slide_abcAHj"
-      ],
+      "block_order": ["slide_eCApAg", "slide_NbDUTy", "slide_abcAHj"],
       "settings": {
         "layout": "full_bleed",
         "slide_height": "medium",
@@ -53,8 +49,8 @@
         "button_link": "shopify://collections/nike-collection"
       }
     },
-    "banner_product": {
-      "type": "banner-product",
+    "featured_product": {
+      "type": "featured-product",
       "settings": {
         "product": "nike-air-max-plus",
         "rated": true,
@@ -105,12 +101,7 @@
           }
         }
       },
-      "block_order": [
-        "banner_Ry6Cgd",
-        "banner_3JbmMy",
-        "banner_9mL89J",
-        "banner_rjtXiW"
-      ],
+      "block_order": ["banner_Ry6Cgd", "banner_3JbmMy", "banner_9mL89J", "banner_rjtXiW"],
       "settings": {
         "title": "Promo Banners",
         "subtitle": "",
@@ -146,7 +137,7 @@
   },
   "order": [
     "slideshow",
-    "banner_product",
+    "featured_product",
     "promo_banners",
     "featured_products_hcHrLY",
     "designers_highlight_TEQ8b7",

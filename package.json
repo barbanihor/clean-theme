@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16"
+  },
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./assets/featured-product-source.css -o ./assets/featured-product.css --minify --watch"
+  }
+}
