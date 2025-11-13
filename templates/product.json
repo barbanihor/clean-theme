@@ -1,17 +1,8 @@
 {
   "sections": {
-    "product-media": {
-      "type": "product-media"
-    },
-    "product-info": {
-      "type": "product-info"
-    },
-    "product-form": {
-      "type": "product-form"
-    },
-    "product-description": {
-      "type": "product-description"
+    "template-product": {
+      "type": "template-product"
     }
   },
-  "order": ["product-media", "product-info", "product-form", "product-description"]
+  "order": ["template-product"]
 }

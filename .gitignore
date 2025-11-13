@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+config/settings_data.json
+.shopify/
+
+# Logs
+*.log
+

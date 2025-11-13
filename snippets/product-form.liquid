@@ -1,0 +1,103 @@
+{{ 'forms.css' | asset_url | stylesheet_tag }}
+
+<div class="product-form-wrapper">
+  {% form 'product', product %}
+    <div class="form-container" aria-busy="false">
+      {% if form.posted_successfully? %}
+        <div role="status" aria-live="polite" class="form-success">
+          {{ 'products.product.form.success' | t }}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="form-errors" role="alert" aria-live="assertive">
+          <h3>{{ 'products.product.form.errors_title' | t }}</h3>
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      {% unless product.has_only_default_variant %}
+        <div class="form-field">
+          <label for="product-variant">{{ 'products.product.form.variant' | t }}</label>
+          <select name="id" id="product-variant" required>
+            {% for variant in product.variants %}
+              <option
+                value="{{ variant.id }}"
+                {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                {% unless variant.available %}disabled{% endunless %}
+              >
+                {{ variant.title }}
+                {% unless variant.available %} - {{ 'products.product.form.sold_out' | t }}{% endunless %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% else %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      {% endunless %}
+
+      <div class="form-field">
+        <label for="product-quantity">{{ 'products.product.form.quantity' | t }}</label>
+        <input
+          type="number"
+          name="quantity"
+          id="product-quantity"
+          value="1"
+          min="1"
+          required
+          {% if form.errors contains 'quantity' %}aria-invalid="true" aria-describedby="quantity-error"{% endif %}
+        >
+        {% if form.errors contains 'quantity' %}
+          <div id="quantity-error" class="field-error">
+            {{ form.errors.translated_fields.quantity | capitalize }}
+            {{ form.errors.messages.quantity }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        <label for="inquiry-reason">{{ 'products.product.form.reason' | t }}</label>
+        <input
+          type="text"
+          name="properties[Reason]"
+          id="inquiry-reason"
+          placeholder="{{ 'products.product.form.reason_placeholder' | t }}"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+        >
+          {% if product.selected_or_first_available_variant.available %}
+            {{ 'products.product.form.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.product.form.sold_out' | t }}
+          {% endif %}
+        </button>
+
+        {% unless product.selected_or_first_available_variant.available %}
+          <div role="status" aria-live="polite" class="availability-message">
+            {{ 'products.product.form.unavailable_message' | t }}
+          </div>
+        {% endunless %}
+      </div>
+    </div>
+  {% endform %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const productForm = document.querySelector('.product-form-wrapper form');
+    if (productForm) {
+      productForm.addEventListener('submit', function() {
+        const container = this.querySelector('.form-container');
+        const button = this.querySelector('button[type="submit"]');
+        if (container) container.setAttribute('aria-busy', 'true');
+        if (button) button.disabled = true;
+      });
+    }
+  });
+</script>

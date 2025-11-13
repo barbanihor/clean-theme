@@ -1,0 +1,135 @@
+<div class="product-page">
+  <div class="product-main">
+    <div class="product-media-wrapper">
+      {% render 'product-media' %}
+    </div>
+
+    <div class="product-info-wrapper">
+      {% render 'product-info' %}
+      {% render 'product-form' %}
+    </div>
+  </div>
+
+  {% if product.description != blank %}
+    <div class="product-description-section">
+      {% render 'product-description' %}
+    </div>
+  {% endif %}
+
+  <div class="product-recommendations-section">
+    {% render 'recommendations-carousel', product_id: product.id %}
+  </div>
+</div>
+
+<style>
+  .product-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .product-main {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    gap: 2rem;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+
+  .product-media-wrapper {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  .product-info-wrapper {
+    flex: 1 1 50%;
+    min-width: 0;
+    position: sticky;
+    top: 1.5rem;
+    align-self: flex-start;
+  }
+
+  .product-description-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+    border-top: 1px solid #e0e0e0;
+    box-sizing: border-box;
+  }
+
+  .product-recommendations-section {
+    width: 100%;
+    background: #f9f9f9;
+    padding: 2rem 0;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 1400px) {
+    .product-main {
+      max-width: 1400px;
+      padding: 2rem;
+      gap: 3rem;
+    }
+
+    .product-description-section {
+      max-width: 1400px;
+      padding: 2.5rem 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-main {
+      flex-direction: column;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .product-media-wrapper,
+    .product-info-wrapper {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    .product-info-wrapper {
+      position: static;
+    }
+
+    .product-description-section {
+      padding: 1.5rem;
+    }
+
+    .product-recommendations-section {
+      padding: 2rem 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-main {
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .product-description-section {
+      padding: 1rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Template Settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "This section combines product media, info, form, description, and recommendations into a single template."
+    }
+  ]
+}
+{% endschema %}
