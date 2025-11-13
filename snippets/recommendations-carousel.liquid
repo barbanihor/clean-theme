@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="{{ 'product-recommendations.css' | asset_url }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<product-recommendations-carousel
+  product-id="{{ product_id }}"
+  limit="8"
+>
+</product-recommendations-carousel>
+
+<script src="{{ 'product-recommendations-carousel.js' | asset_url }}" defer></script>

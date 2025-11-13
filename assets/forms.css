@@ -1,9 +1,9 @@
 /* Form containers */
 .contact-form-wrapper,
 .product-form-wrapper {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .form-container {
@@ -17,13 +17,14 @@
 
 /* Form fields */
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-field label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .form-field input,
@@ -35,6 +36,7 @@
   border-radius: 0.375rem;
   font-size: 1rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
 }
 
 .form-field input:focus,
@@ -91,61 +93,6 @@
   color: #4a7c4a;
 }
 
-/* Form field labels for radio groups */
-.form-field-label {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #1f2937;
-}
-
-/* Radio groups */
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.radio-option {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-  background-color: #ffffff;
-  margin-bottom: 0;
-  font-weight: normal;
-}
-
-.radio-option:hover {
-  border-color: #3b82f6;
-  background-color: #f8faff;
-}
-
-.radio-option:has(input:checked) {
-  border-color: #3b82f6;
-  background-color: #eff6ff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.radio-option input[type="radio"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0;
-  cursor: pointer;
-  accent-color: #3b82f6;
-}
-
-.radio-label {
-  font-size: 1rem;
-  color: #374151;
-  cursor: pointer;
-  user-select: none;
-}
 
 /* Honeypot (hidden) */
 .honeypot {
@@ -154,15 +101,22 @@
   visibility: hidden;
 }
 
+/* Form actions */
+.form-actions {
+  margin-top: 1.5rem;
+}
+
 /* Buttons */
 .btn {
-  padding: 0.75rem 1.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
   border: none;
   border-radius: 0.375rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
+  box-sizing: border-box;
 }
 
 .btn-primary {
@@ -224,10 +178,6 @@
 @media (max-width: 768px) {
   .contact-form-wrapper,
   .product-form-wrapper {
-    padding: 1rem;
-  }
-
-  .radio-group {
-    flex-direction: column;
+    padding: 0;
   }
 }

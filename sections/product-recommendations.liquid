@@ -1,0 +1,149 @@
+<link rel="stylesheet" href="{{ 'product-recommendations.css' | asset_url }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<div class="product-recommendations">
+  {% if recommendations.performed and recommendations.products_count > 0 %}
+    <div class="product-recommendations__inner">
+      <h2 class="product-recommendations__heading">You May Also Like</h2>
+
+      <div class="product-recommendations__carousel-wrapper">
+        <div class="swiper product-recommendations-swiper">
+          <div class="swiper-wrapper">
+            {% for product in recommendations.products %}
+              <div class="swiper-slide">
+                <div class="product-recommendation-card">
+                  <a href="{{ product.url }}" class="product-recommendation-card__link">
+                    <div class="product-recommendation-card__image">
+                      {% if product.featured_image %}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 400 }}"
+                          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                          width="400"
+                          height="400"
+                          loading="lazy"
+                        >
+                      {% else %}
+                        <div class="product-recommendation-card__placeholder">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="60"
+                            height="60"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                          </svg>
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="product-recommendation-card__info">
+                      <h3 class="product-recommendation-card__title">{{ product.title }}</h3>
+
+                      <div class="product-recommendation-card__price">
+                        {% if product.compare_at_price > product.price %}
+                          <span class="product-recommendation-card__price--compare">
+                            {{- product.compare_at_price | money -}}
+                          </span>
+                        {% endif %}
+                        <span class="product-recommendation-card__price--current">{{ product.price | money }}</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="swiper-button-prev product-recommendations-prev"></div>
+        <div class="swiper-button-next product-recommendations-next"></div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  (function () {
+    'use strict';
+
+    let swiperInstance = null;
+    let initAttempts = 0;
+    const maxAttempts = 50;
+
+    function initSwiper() {
+      initAttempts++;
+
+      if (typeof Swiper === 'undefined') {
+        if (initAttempts < maxAttempts) {
+          setTimeout(initSwiper, 100);
+        }
+        return;
+      }
+
+      const swiperContainer = document.querySelector('.product-recommendations-swiper');
+      if (!swiperContainer) {
+        if (initAttempts < maxAttempts) {
+          setTimeout(initSwiper, 100);
+        }
+        return;
+      }
+
+      if (swiperInstance !== null) {
+        return;
+      }
+
+      try {
+        swiperInstance = new Swiper('.product-recommendations-swiper', {
+          slidesPerView: 1,
+          spaceBetween: 20,
+
+          navigation: {
+            nextEl: '.product-recommendations-next',
+            prevEl: '.product-recommendations-prev',
+          },
+
+          breakpoints: {
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+          },
+
+          watchOverflow: true,
+          observer: true,
+          observeParents: true,
+
+          on: {
+            init: function () {
+              console.log('Product Recommendations Swiper initialized successfully');
+            },
+            slideChange: function () {
+              console.log('Slide changed to:', this.activeIndex);
+            },
+          },
+        });
+      } catch (error) {
+        console.error('Error initializing Swiper:', error);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSwiper);
+    } else {
+      initSwiper();
+    }
+  })();
+</script>
