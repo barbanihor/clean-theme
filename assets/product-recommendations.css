@@ -233,3 +233,27 @@
     height: 8px;
   }
 }
+
+@media (max-width: 320px) {
+  .product-recommendations {
+    padding: 2rem 0.5rem;
+  }
+
+  .product-recommendations__heading {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-recommendations__carousel-wrapper {
+    padding: 0 35px;
+  }
+
+  .product-recommendation-card__title {
+    font-size: 0.9rem;
+    min-height: 2.5em;
+  }
+
+  .product-recommendation-card__info {
+    padding: 0.75rem;
+  }
+}

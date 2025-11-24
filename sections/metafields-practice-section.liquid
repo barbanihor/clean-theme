@@ -10,12 +10,12 @@
   </p>
 
   <div>
-    <img src="{{ meta.media.value |  image_url: width: 300  }}" alt="meta image" width="300" height="300">
+    {{ meta.media.value | image_url: width: 300 | image_tag: width: 300, height: 300, alt: 'meta image', loading: 'lazy' }}
   </div>
 
   <div>
     {% for image in meta.list_of_media.value %}
-      {{ image | image_url: width: 150 | image_tag: width: 150, height: 150 }}
+      {{ image | image_url: width: 150 | image_tag: width: 150, height: 150, loading: 'lazy' }}
     {% endfor %}
   </div>
 

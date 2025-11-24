@@ -7,7 +7,7 @@
 
   <div class="header__actions actions">
     <a class="actions__cart" href="{{ routes.cart_url }}" aria-label="{{ 'a11y.open_cart' | t | default: 'Open cart' }}">
-      {%- render 'icon-cart' -%}
+      {{ 'icon-shopping-bag.svg' | inline_asset_content }}
     </a>
 
     {%- if shop.customer_accounts_enabled -%}
