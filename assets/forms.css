@@ -1,5 +1,10 @@
 /* Form containers */
-.contact-form-wrapper,
+.contact-form-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
 .product-form-wrapper {
   max-width: 100%;
   margin: 0;

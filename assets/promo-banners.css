@@ -37,6 +37,20 @@
   }
 }
 
+@media (max-width: 320px) {
+  .promo-banners {
+    padding: 40px 15px;
+  }
+
+  .promo-banners__title {
+    font-size: 1.5rem;
+  }
+
+  .banner-block__image-wrapper {
+    width: 100%;
+  }
+}
+
 .banner-block {
   position: relative;
   overflow: hidden;
