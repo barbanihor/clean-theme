@@ -14,8 +14,9 @@
     <title>{{ shop.name | escape }}</title>
   </head>
   <body class="template-{{ template.name }}">
+    <a href="#main" class="skip-to-content"> Skip to content </a>
     {% section 'header' %}
-    <main id="main" role="main" aria-labelledby="page-title">
+    <main id="main" role="main" aria-labelledby="page-title" tabindex="-1">
       {{ content_for_layout }}
     </main>
     {% section 'footer' %}

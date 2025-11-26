@@ -225,12 +225,34 @@
       direction: 'vertical',
       watchSlidesProgress: true,
       slideToClickedSlide: true,
+      // Клавіатурна навігація - WCAG 2.1.1 (A)
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+      // Accessibility - WCAG 2.1.1 (A)
+      a11y: {
+        enabled: true,
+        prevSlideMessage: 'Previous image',
+        nextSlideMessage: 'Next image',
+      },
     });
 
     const mainSwiper = new Swiper('.featured-product__swiper', {
       spaceBetween: 10,
       thumbs: {
         swiper: thumbsSwiper,
+      },
+      // Клавіатурна навігація - WCAG 2.1.1 (A)
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+      // Accessibility - WCAG 2.1.1 (A)
+      a11y: {
+        enabled: true,
+        prevSlideMessage: 'Previous product image',
+        nextSlideMessage: 'Next product image',
       },
     });
 

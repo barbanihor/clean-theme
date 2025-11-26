@@ -249,6 +249,25 @@
     slideshowComponent.addEventListener('mouseenter', stopAutoplay);
     slideshowComponent.addEventListener('mouseleave', startAutoplay);
 
+    // Клавіатурна навігація - WCAG 2.1.1 (A)
+    slideshowComponent.setAttribute('tabindex', '0');
+    slideshowComponent.setAttribute('role', 'region');
+    slideshowComponent.setAttribute('aria-label', 'Image carousel');
+
+    slideshowComponent.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+        goToSlide(prevIndex);
+        restartAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const nextIndex = (currentSlideIndex + 1) % totalSlides;
+        goToSlide(nextIndex);
+        restartAutoplay();
+      }
+    });
+
     // Initialize
     updateCustomDots();
     startAutoplay();

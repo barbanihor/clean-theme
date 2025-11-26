@@ -9,7 +9,8 @@
       {{
         block.settings.image
         | image_url: width: 800
-        | image_tag: class: 'banner-block__image', alt: block.settings.image.alt | default: block.settings.title
+        | image_tag: class: 'banner-block__image', alt: block.settings.image.alt
+        | default: block.settings.title
       }}
     </div>
   {% endif %}
