@@ -41,6 +41,7 @@ class ProductRecommendationsCarousel extends HTMLElement {
 
       if (html && html.trim().length > 0) {
         this.innerHTML = html;
+        console.log('Recommendations loaded successfully');
 
         this.initSwiper();
       } else {
@@ -101,6 +102,11 @@ class ProductRecommendationsCarousel extends HTMLElement {
           watchOverflow: true,
           observer: true,
           observeParents: true,
+          on: {
+            init: function () {
+              console.log('Recommendations Swiper initialized');
+            },
+          },
         });
       } catch (error) {
         console.error('Swiper init error:', error);

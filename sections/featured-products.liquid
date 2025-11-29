@@ -47,17 +47,13 @@
       <div class="product-card" data-price="{{ product.price }}" data-title="{{ product.title }}" data-url="{{ product.url }}">
         <a href="{{ product.url }}" class="product-card__link">
           {% if product.featured_image %}
-            {{
-              product.featured_image
-              | image_url: width: 600
-              | image_tag:
-                  width: 300,
-                  height: 300,
-                  sizes: '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px',
-                  widths: '160,200,300,400,600',
-                  loading: forloop.index <= 4 | ternary: 'eager', 'lazy',
-                  alt: product.featured_image.alt | default: product.title | escape
-            }}
+            <img
+              src="{{ product.featured_image | image_url: width: 300, height: 300}}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              width="300"
+              height="300"
+              loading="lazy"
+            >
           {% else %}
             <div style="width: 300px; height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-bottom: 10px;">
               <span style="color: #999;">No image</span>

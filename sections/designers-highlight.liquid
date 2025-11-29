@@ -162,18 +162,7 @@
       {% for designer in designers_list %}
         <div class="designer-card">
           {% if designer.image %}
-            {{
-              designer.image
-              | image_url: width: 400
-              | image_tag:
-                  class: 'designer-card__image',
-                  width: 180,
-                  height: 180,
-                  sizes: '(max-width: 640px) 120px, 180px',
-                  widths: '120,180,240,360,400',
-                  loading: 'lazy',
-                  alt: designer.name | default: 'Designer' | escape
-            }}
+            {{ designer.image | image_url: width: 300 | image_tag: class: 'designer-card__image' }}
           {% endif %}
 
           {% if designer.name %}

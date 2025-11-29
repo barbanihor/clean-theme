@@ -249,25 +249,6 @@
     slideshowComponent.addEventListener('mouseenter', stopAutoplay);
     slideshowComponent.addEventListener('mouseleave', startAutoplay);
 
-    // Клавіатурна навігація - WCAG 2.1.1 (A)
-    slideshowComponent.setAttribute('tabindex', '0');
-    slideshowComponent.setAttribute('role', 'region');
-    slideshowComponent.setAttribute('aria-label', 'Image carousel');
-
-    slideshowComponent.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
-        goToSlide(prevIndex);
-        restartAutoplay();
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        const nextIndex = (currentSlideIndex + 1) % totalSlides;
-        goToSlide(nextIndex);
-        restartAutoplay();
-      }
-    });
-
     // Initialize
     updateCustomDots();
     startAutoplay();
@@ -361,24 +342,13 @@
               {{
                 block.settings.image
                 | image_url: width: 3840
-                | image_tag:
-                    height: height,
-                    sizes: '100vw',
-                    widths: '375,640,750,828,1080,1200,1920,2048,3840',
-                    fetchpriority: fetch_priority,
-                    loading: 'eager',
-                    alt: block.settings.image.alt | default: 'Slideshow image'
+                | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
               }}
             {%- else -%}
               {{
                 block.settings.image
                 | image_url: width: 3840
-                | image_tag:
-                    loading: 'lazy',
-                    height: height,
-                    sizes: '100vw',
-                    widths: '375,640,750,828,1080,1200,1920,2048,3840',
-                    alt: block.settings.image.alt | default: 'Slideshow image'
+                | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
               }}
             {%- endif -%}
           {%- else -%}
