@@ -16,13 +16,17 @@
               {%- assign white_images = product.images | where_exp: 'img', "img.src contains 'white'" -%}
               {%- for image in white_images limit: 5 -%}
                 <div class="swiper-slide">
-                  <img
-                    width="88"
-                    height="88"
-                    src="{{ image | image_url: width: 88, height: 88 }}"
-                    alt="{{ image.alt | default: product.title | escape }}"
-                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                  >
+                  {{
+                    image
+                    | image_url: width: 176
+                    | image_tag:
+                        width: 88,
+                        height: 88,
+                        sizes: '88px',
+                        widths: '88,176',
+                        loading: forloop.first | ternary: 'eager', 'lazy',
+                        alt: image.alt | default: product.title | escape
+                  }}
                 </div>
               {%- endfor -%}
             </div>
@@ -46,13 +50,17 @@
                 {%- assign white_images = product.images | where_exp: 'img', "img.src contains 'white'" -%}
                 {%- for image in white_images limit: 5 -%}
                   <div class="swiper-slide">
-                    <img
-                      width="536"
-                      height="536"
-                      src="{{ image | image_url: width: 536, height: 536 }}"
-                      alt="{{ image.alt | default: product.title | escape }}"
-                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                    >
+                    {{
+                      image
+                      | image_url: width: 750
+                      | image_tag:
+                          width: 536,
+                          height: 536,
+                          sizes: '(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 536px',
+                          widths: '288,375,536,640,750',
+                          loading: forloop.first | ternary: 'eager', 'lazy',
+                          alt: image.alt | default: product.title | escape
+                    }}
                   </div>
                 {%- endfor -%}
               {%- else -%}
@@ -350,8 +358,6 @@
       const filteredImages = Object.entries(productImages)
         .filter(([filename]) => filename.toLowerCase().includes(colorName.toLowerCase()));
 
-      console.log('Filtered images for color:', colorName, filteredImages.length);
-
       if (variantImage && filteredImages.length > 0) {
         const variantImageFilename = variantImage.split('/').pop().split('?')[0];
         let variantIndex = -1;
@@ -393,12 +399,6 @@
         const colorName = this.getAttribute('data-color-name');
         const variantImage = this.getAttribute('data-variant-image');
         const variantImageAlt = this.getAttribute('data-variant-image-alt');
-
-        console.log('Color button clicked:', {
-          colorName,
-          variantImage,
-          variantImageAlt
-        });
 
         if (colorName) {
           selectedOptions.color = colorName;
