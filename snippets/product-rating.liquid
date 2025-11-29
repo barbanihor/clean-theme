@@ -11,9 +11,14 @@
   assign rating_floor = rating_decimal | floor
 %}
 
-<div class="product-rating" data-rating="{{ rating_decimal }}">
+<div
+  class="product-rating"
+  data-rating="{{ rating_decimal }}"
+  role="img"
+  aria-label="Rated {{ rating_decimal }} out of 5 stars{% if rating_count > 0 %}, based on {{ rating_count }} reviews{% endif %}"
+>
   {% if rating_decimal > 0 %}
-    <div class="product-rating__stars">
+    <div class="product-rating__stars" aria-hidden="true">
       {% for i in (1..rating_max) %}
         {% assign next_number = rating_decimal | plus: 1 %}
         {% if i <= rating_decimal %}

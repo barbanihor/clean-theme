@@ -8,8 +8,17 @@
     <div class="banner-block__image-wrapper">
       {{
         block.settings.image
-        | image_url: width: 800
-        | image_tag: class: 'banner-block__image', alt: block.settings.image.alt | default: block.settings.title
+        | image_url: width: 1200
+        | image_tag:
+          class: 'banner-block__image',
+          loading: 'lazy',
+          width: 800,
+          height: 800,
+          sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px',
+          widths: '375,640,750,828,1080,1200',
+          alt: block.settings.image.alt
+        | default: block.settings.title
+        | escape
       }}
     </div>
   {% endif %}

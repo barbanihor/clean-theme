@@ -353,8 +353,6 @@
   line-height: 1.7;
 }
 
-/* Grid removed - using flex layout in template-product.liquid instead */
-
 @media (max-width: 767px) {
   .product-form-wrapper {
     padding: 1rem;

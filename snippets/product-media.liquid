@@ -4,15 +4,20 @@
   <div class="product-media__container">
     {% if product.featured_image %}
       <div class="product-media__main">
-        <img
-          src="{{ selected_variant.featured_image | default: product.featured_image | image_url: width: 800 }}"
-          alt="{{ selected_variant.featured_image.alt | default: product.featured_image.alt | default: product.title | escape }}"
-          width="800"
-          height="800"
-          loading="eager"
-          class="product-media__image"
-          id="product-featured-image"
-        >
+        {{
+          selected_variant.featured_image | default: product.featured_image
+          | image_url: width: 1200
+          | image_tag:
+              width: 800,
+              height: 800,
+              sizes: '(max-width: 768px) 100vw, 50vw',
+              widths: '375,550,750,800,1000,1200',
+              loading: 'eager',
+              fetchpriority: 'high',
+              class: 'product-media__image',
+              id: 'product-featured-image',
+              alt: selected_variant.featured_image.alt | default: product.featured_image.alt | default: product.title | escape
+        }}
       </div>
 
       {% if product.images.size > 1 %}
@@ -24,13 +29,17 @@
               data-image-url="{{ image | image_url: width: 800 }}"
               aria-label="{{ 'products.product.media.view_image' | t }} {{ forloop.index }}"
             >
-              <img
-                src="{{ image | image_url: width: 150 }}"
-                alt="{{ image.alt | default: product.title | escape }}"
-                width="150"
-                height="150"
-                loading="lazy"
-              >
+              {{
+                image
+                | image_url: width: 300
+                | image_tag:
+                    width: 150,
+                    height: 150,
+                    sizes: '150px',
+                    widths: '150,300',
+                    loading: 'lazy',
+                    alt: image.alt | default: product.title | escape
+              }}
             </button>
           {% endfor %}
         </div>
